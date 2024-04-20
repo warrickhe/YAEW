@@ -90,20 +90,4 @@ const IndexPage = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  item: {
-    flex: 1,
-    alignItems: 'center',
-    padding: 10,
-  },
-  image: {
-    width: 100,
-    height: 100,
-  },
-  name: {
-    textAlign: 'center',
-    marginTop: 5,
-  },
-});
-
 export default IndexPage;

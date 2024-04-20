@@ -8,8 +8,10 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Text>efedfe</Text>
-      <IndexPage />
-      <CapturePage />
+      <View style={styles.camera}>
+        <CapturePage style={styles.camera}/>
+      </View>
+      
       <StatusBar style="auto" />
     </View>
   );
@@ -21,5 +23,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+    width: '100%'
+  },
+  camera: {
+    height: '50%',
+    width: '100%'
   },
 });
