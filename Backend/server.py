@@ -5,8 +5,12 @@ from flask_cors import CORS
 import pymongo
 from bson.json_util import dumps, loads 
 import my_secrets
+import google.generativeai as genai
+from functools import lru_cache
+
 mongo_uri = my_secrets.get_mongo_uri()
-gemini_api = my_secrets.get_gemini_key()
+gemini_api_key = my_secrets.get_gemini_key()
+model = None
 client = None
 db = None
 app = Flask(__name__)
@@ -66,14 +70,26 @@ def get_profile():
   username = user['username']
   return dumps({"username":username,"total_captures":total_captures,"unique_species":unique_species,"points":points})
 
+
+#break up descriptions into 3 separate apis, each with their own cache probably
+@lru_cache(maxsize=10000)
+def get_descriptions(species):
+  short_prompt = f"Make a short but funny description of a {species}."
+  detailed_prompt = f"Give an 100 to 150 word description of a {species}."  
+  how_to_find = f"Suppose I am a child. Where can I go to find a live {species}?"
+  short_resp = model.generate_content(short_prompt).text
+  long_resp = model.generate_content(detailed_prompt).text
+  how_to_find = model.generate_content(how_to_find).text
+  return dumps({"short":short_resp,"long_resp":long_resp,"find":how_to_find})
+
 @app.route('/info', methods=['GET'])
 def get_info():
   species = request.args.get("species")
-  prompt = ""
-  return dumps({"description":"the chicken is a fierce species. it is quite tasty though."})
-
+  return get_descriptions(species)
 
 if __name__ == '__main__':
   client = pymongo.MongoClient(mongo_uri)
   db = client["YAEW"]
+  model = genai.GenerativeModel('gemini-pro')
+  genai.configure(api_key=gemini_api_key)
   app.run(host="localhost", port=7272, debug=True)
