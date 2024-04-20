@@ -138,4 +138,4 @@ if __name__ == '__main__':
   model = genai.GenerativeModel('gemini-1.5-pro-latest')
   faster_model = genai.GenerativeModel('gemini-pro')
   genai.configure(api_key=gemini_api_key)
-  app.run(host="localhost", port=7272, debug=True)
+  app.run(host="0.0.0.0", port=7272, debug=True)
