@@ -5,7 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 // Pages
-import LandingPage from './pages/Landing';
+import HomePage from './pages/HomePage';
 import IndexPage from './pages/IndexPage';
 import CapturePage from './pages/CapturePage';
 import ImagePickerExample from './pages/ImagePickerPage';
@@ -14,8 +14,8 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="LandingPage">
-        <Stack.Screen name="LandingPage" component={LandingPage} />
+      <Stack.Navigator initialRouteName="HomePage">
+        <Stack.Screen name="HomePage" component={HomePage} />
         <Stack.Screen name="CapturePage" component={CapturePage} />
         <Stack.Screen name="IndexPage" component={IndexPage} />
       </Stack.Navigator>
