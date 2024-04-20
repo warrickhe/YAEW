@@ -3,6 +3,7 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import IndexPage from './IndexPage';
 import CapturePage from './CapturePage';
+import ImagePickerExample from './ImagePickerPage';
 
 export default function App() {
   return (
@@ -11,7 +12,7 @@ export default function App() {
       <View style={styles.camera}>
         <CapturePage style={styles.camera}/>
       </View>
-      
+      <ImagePickerExample/>
       <StatusBar style="auto" />
     </View>
   );
