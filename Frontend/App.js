@@ -8,8 +8,10 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomePage from './pages/HomePage';
 import IndexPage from './pages/IndexPage';
 import CapturePage from './pages/CapturePage';
+import JournalPage from './pages/JournalPage';
 import ImagePickerExample from './pages/ImagePickerPage';
 import UploadPage from './pages/UploadPage';
+
 
 const Stack = createNativeStackNavigator();
 export default function App() {
@@ -20,6 +22,7 @@ export default function App() {
         <Stack.Screen name="CapturePage" component={CapturePage} />
         <Stack.Screen name="IndexPage" component={IndexPage} />
         <Stack.Screen name="UploadPage" component={UploadPage} />
+        <Stack.Screen name="JournalPage" component={JournalPage} />
       </Stack.Navigator>
     </NavigationContainer>
   );
