@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Text, Button, Image, View, StyleSheet } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+// import { format } from 'date-fns';
 
 //192.168.189.182
 
@@ -8,6 +9,18 @@ const BACKEND_URL = 'http://192.168.189.182:7272';
 
 export default function ImagePickerExample() {
   const [image, setImage] = useState(null);
+
+  // function getCurrentDateAndTime() {
+  //   const now = new Date();
+
+  //   const formattedDate = format(now, 'yyyy-MM-dd'); // Output: 2024-04-20
+  //   const formattedTime = format(now, 'HH:mm');
+
+  //   console.log(formattedDate);
+  //   console.log(formattedTime);
+
+  //   // return { date: formattedDate, time: formattedTime };
+  // }
 
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
@@ -67,6 +80,7 @@ export default function ImagePickerExample() {
         {image && <Image source={{ uri: image }} style={styles.image} />}
       </View> */}
       <View>
+        {/* <Button title="test date" onPress={getCurrentDateAndTime}></Button> */}
         <Button title="Pick an Image" onPress={pickImage} />
         {image && (
           <>
