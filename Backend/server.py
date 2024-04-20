@@ -11,6 +11,7 @@ from functools import lru_cache
 mongo_uri = my_secrets.get_mongo_uri()
 gemini_api_key = my_secrets.get_gemini_key()
 model = None
+faster_model = None
 client = None
 db = None
 app = Flask(__name__)
@@ -70,26 +71,43 @@ def get_profile():
   username = user['username']
   return dumps({"username":username,"total_captures":total_captures,"unique_species":unique_species,"points":points})
 
-
-#break up descriptions into 3 separate apis, each with their own cache probably
-@lru_cache(maxsize=10000)
-def get_descriptions(species):
+@lru_cache(maxsize=3000)
+def short_description(species):
   short_prompt = f"Make a short but funny description of a {species}."
-  detailed_prompt = f"Give an 100 to 150 word description of a {species}."  
-  how_to_find = f"Suppose I am a child. Where can I go to find a live {species}?"
-  short_resp = model.generate_content(short_prompt).text
-  long_resp = model.generate_content(detailed_prompt).text
-  how_to_find = model.generate_content(how_to_find).text
-  return dumps({"short":short_resp,"long_resp":long_resp,"find":how_to_find})
+  short_resp = faster_model.generate_content(short_prompt).text
+  return dumps({"description":short_resp})
 
-@app.route('/info', methods=['GET'])
-def get_info():
+@lru_cache(maxsize=3000)
+def long_description(species):
+  detailed_prompt = f"Give an 100 to 150 word description of a {species}."
+  long_resp = model.generate_content(detailed_prompt).text
+  return dumps({"description":long_resp})
+
+@lru_cache(maxsize=3000)
+def how_to_find(species): 
+  find_prompt = f"Suppose I am a child. Where can I go to find a live {species}? Keep the output between 100 and 150 words."
+  find_resp = model.generate_content(find_prompt).text
+  return dumps({"description":find_resp})
+
+@app.route('/info/short', methods=['GET'])
+def get_short():
   species = request.args.get("species")
-  return get_descriptions(species)
+  return short_description(species)
+
+@app.route('/info/long', methods=['GET'])
+def get_long():
+  species = request.args.get("species")
+  return long_description(species)
+
+@app.route('/info/find', methods=['GET'])
+def get_find():
+  species = request.args.get("species")
+  return how_to_find(species)
 
 if __name__ == '__main__':
   client = pymongo.MongoClient(mongo_uri)
   db = client["YAEW"]
-  model = genai.GenerativeModel('gemini-pro')
+  model = genai.GenerativeModel('gemini-1.5-pro-latest')
+  faster_model = genai.GenerativeModel('gemini-pro')
   genai.configure(api_key=gemini_api_key)
   app.run(host="localhost", port=7272, debug=True)
