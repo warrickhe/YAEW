@@ -59,6 +59,16 @@ def get_journal():
   res = db['captures'].find({"deviceID":deviceID}).sort("date",-1)
   return dumps(res)
 
+@app.route('/collection', methods=['GET'])
+def get_collection():
+  deviceID = request.args.get("device_id")
+  res = db['captures'].find({"deviceID":deviceID}).distinct("animal")
+  animals = []
+  for r in res:
+    animals.append(r)
+  animals.sort()
+  return dumps({"animals":animals})
+
 @app.route('/profile', methods=['GET'])
 def get_profile():
   deviceID = request.args.get("device_id")
@@ -103,6 +113,24 @@ def get_long():
 def get_find():
   species = request.args.get("species")
   return how_to_find(species)
+
+@lru_cache(maxsize=3000)
+def make_quiz(species): 
+  prompt = f"Give me a 4 choice multiple choice question about {species}. Make the format: (question)\n"\
+    "a)(answer1)  \nb)(answer1)\nc)(answer1)\nd)(answer1)"
+  ans_prompt = "What is the answer?"
+  chat = model.start_chat(history=[])
+  question = chat.send_message(prompt).text
+  answer = chat.send_message(ans_prompt).text
+  print(answer)
+  answer = answer[answer.find(')')-1]
+  return dumps({"question":question,"answer":answer})
+
+@app.route('/quiz', methods=['GET'])
+def get_quiz():
+  species = request.args.get("species")
+  return make_quiz(species)
+  
 
 if __name__ == '__main__':
   client = pymongo.MongoClient(mongo_uri)
