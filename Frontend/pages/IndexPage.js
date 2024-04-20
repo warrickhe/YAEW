@@ -29,7 +29,7 @@
     </TouchableOpacity>
   );*/
 
-  /*return (
+/*return (
     <View style={styles.container}>
       <FlatList
         data={animals}
@@ -48,22 +48,22 @@ const dummyData = [
   {
     id: '1',
     name: 'Lion',
-    image: require('./Warrick.png'), // Use a placeholder image URL
+    image: require('../images/Warrick.png'), // Use a placeholder image URL
   },
   {
     id: '2',
     name: 'Elephant',
-    image: require('./Warrick.png'),
+    image: require('../images/Warrick.png'),
   },
   {
     id: '3',
     name: 'Tiger',
-    image: require('./Warrick.png'),
+    image: require('../images/Warrick.png'),
   },
   {
     id: '4',
     name: 'Giraffe',
-    image: require('./Warrick.png'),
+    image: require('../images/Warrick.png'),
   },
 ];
 
@@ -91,3 +91,18 @@ const IndexPage = () => {
 };
 
 export default IndexPage;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  image: {
+    width: 200,
+    height: 200,
+  },
+  item: {
+    color: 'red',
+  },
+});
