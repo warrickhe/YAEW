@@ -22,7 +22,7 @@ export default function App() {
   }
 
   function toggleCameraType() {
-    setType(current => (current === CameraType.back ? CameraType.front : CameraType.back));
+    setType((current) => (current === CameraType.back ? CameraType.front : CameraType.back));
   }
 
   return (

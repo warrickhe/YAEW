@@ -9,6 +9,7 @@ import HomePage from './pages/HomePage';
 import IndexPage from './pages/IndexPage';
 import CapturePage from './pages/CapturePage';
 import ImagePickerExample from './pages/ImagePickerPage';
+import UploadPage from './pages/UploadPage';
 
 const Stack = createNativeStackNavigator();
 export default function App() {
@@ -18,6 +19,7 @@ export default function App() {
         <Stack.Screen name="HomePage" component={HomePage} />
         <Stack.Screen name="CapturePage" component={CapturePage} />
         <Stack.Screen name="IndexPage" component={IndexPage} />
+        <Stack.Screen name="UploadPage" component={UploadPage} />
       </Stack.Navigator>
     </NavigationContainer>
   );

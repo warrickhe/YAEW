@@ -25,7 +25,8 @@ export default function HomePage({ navigation }) {
       <View>
         {/* <Button title="Journal Page TODO" onPress={() => console.log('journal pages')}></Button> */}
         <Button title="Index Page" onPress={() => navigation.navigate('IndexPage')}></Button>
-        <Button title="Capture Page" onPress={() => navigation.navigate('CapturePage')}></Button>
+        <Button title="Capture!" onPress={() => navigation.navigate('CapturePage')}></Button>
+        <Button title="Upload!" onPress={() => navigation.navigate('UploadPage')}></Button>
       </View>
     </>
   );
@@ -37,7 +38,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   stats_box: {
-    marginRight: '10',
+    marginRight: 20,
   },
   container: {
     flex: 1,
