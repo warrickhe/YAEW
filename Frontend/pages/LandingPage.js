@@ -52,7 +52,7 @@ export default function LandingPage({ navigation }) {
 
       if (response.status === 200) {
         console.log('User exists, redirecting to HOME PAGE');
-        console.log('deviceID from landingpage: ' + uuid);
+        // console.log('deviceID from landingpage: ' + uuid);
         // const resData = await response.json();
         // await SecureStore.setItemAsync('username', resData.username);
         navigation.navigate('HomePage');

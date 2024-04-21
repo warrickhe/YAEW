@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Text, Button, Image, View, StyleSheet } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+import * as SecureStore from 'expo-secure-store';
+
 // import { format } from 'date-fns';
 
 //192.168.189.182
@@ -8,7 +10,17 @@ import * as ImagePicker from 'expo-image-picker';
 const BACKEND_URL = 'http://10.226.3.49:7272';
 
 export default function ImagePickerExample() {
+  const [deviceID, setDeviceID] = useState('');
   const [image, setImage] = useState(null);
+
+  useEffect(() => {
+    const fetchDeviceID = async () => {
+      let fetchUUID = await SecureStore.getItemAsync('secure_deviceid');
+      setDeviceID(fetchUUID);
+    };
+
+    fetchDeviceID();
+  }, []);
 
   // function getCurrentDateAndTime() {
   //   const now = new Date();
@@ -55,7 +67,7 @@ export default function ImagePickerExample() {
     console.log(formattedData);
 
     try {
-      const response = await fetch(`${BACKEND_URL}/capture`, {
+      const response = await fetch(`${BACKEND_URL}/capture?device_id=${deviceID}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'multipart/form-data', // Key header for file uploads

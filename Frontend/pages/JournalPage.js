@@ -1,34 +1,15 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, FlatList, Image } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
+import base64 from 'base-64';
 
 const BACKEND_URL = 'http://10.226.3.49:7272';
-
-const data = [
-  {
-    key: 'Devin',
-    uri: 'https://static.boredpanda.com/blog/wp-content/uploads/2018/04/5acb63d83493f__700-png.jpg',
-    points: 5,
-    date: 'Apr 19',
-  },
-  {
-    key: 'Dan',
-    uri: 'https://static.boredpanda.com/blog/wp-content/uploads/2018/04/5acb63d83493f__700-png.jpg',
-  },
-  { key: 'Dominic', uri: 'https://example.com/dominic.jpg' },
-  { key: 'Jackson', uri: 'https://example.com/jackson.jpg' },
-  { key: 'James', uri: 'https://example.com/james.jpg' },
-  { key: 'Joel', uri: 'https://example.com/joel.jpg' },
-  { key: 'John', uri: 'https://example.com/john.jpg' },
-  { key: 'Jillian', uri: 'https://example.com/jillian.jpg' },
-  { key: 'Jimmy', uri: 'https://example.com/jimmy.jpg' },
-  { key: 'Julie', uri: 'https://example.com/julie.jpg' },
-];
 
 const ItemSeparatorComponent = () => <View style={styles.separator} />;
 
 export default function JournalPage({ navigation }) {
   const [deviceID, setDeviceID] = useState('');
+  const [journalData, setJournalData] = useState([]);
 
   useEffect(() => {
     const fetchDeviceID = async () => {
@@ -36,33 +17,51 @@ export default function JournalPage({ navigation }) {
       setDeviceID(fetchUUID);
     };
 
+    fetchDeviceID();
+  }, []);
+
+  useEffect(() => {
+    if (!deviceID) return;
+
     const fetchJournalData = async () => {
-      console.log('fetching');
+      console.log('fetching journal data');
       try {
-        const response = await fetch(`${BACKEND_URL}/journal?device_id${deviceID}`, {
+        const response = await fetch(`${BACKEND_URL}/journal?device_id=${deviceID}`, {
           method: 'GET',
         });
 
         const resData = await response.json();
-        console.log(resData);
+        setJournalData(resData); // Set the state here
       } catch (error) {
         console.error('Error:', error.message);
       }
     };
 
-    fetchDeviceID();
     fetchJournalData();
-  }, []);
+  }, [deviceID]);
 
-  // arnold code below
+  useEffect(() => {
+    if (journalData) {
+      console.log('Journal data updated', journalData);
+    }
+  }, [journalData]);
+
   const renderItem = ({ item }) => {
+    const formattedDate = new Date(item.date.$date).toLocaleDateString();
+    let imageData = null;
+
+    // Check if `item.image` has binary data and convert to base64
+    if (item.image && item.image.$binary && item.image.$binary.base64) {
+      imageData = `data:image/png;base64,${item.image.$binary.base64}`; // Adjust based on image type (e.g., jpeg)
+    }
+
     return (
       <View style={styles.itemContainer}>
-        <Image source={{ uri: item.uri }} style={styles.image} />
+        <Image source={{ uri: imageData }} style={styles.image} />
         <View style={styles.textContainer}>
-          <Text style={styles.item}>Found a {item.key}</Text>
+          <Text style={styles.item}>Found a {item.animal}</Text>
           <Text style={styles.item}>Points +{item.points}</Text>
-          <Text style={styles.item}>Found on {item.date}</Text>
+          <Text style={styles.item}>Found on {formattedDate}</Text>
         </View>
       </View>
     );
@@ -77,7 +76,7 @@ export default function JournalPage({ navigation }) {
 
       <View style={styles.container}>
         <FlatList
-          data={data}
+          data={journalData}
           renderItem={renderItem}
           ItemSeparatorComponent={ItemSeparatorComponent}
         />

@@ -25,14 +25,13 @@ export default function HomePage({ navigation }) {
 
     const fetchProfile = async () => {
       console.log('fetching profile');
-      console.log(`${BACKEND_URL}/profile?device_id=${deviceID}`);
       try {
         const response = await fetch(`${BACKEND_URL}/profile?device_id=${deviceID}`, {
           method: 'GET',
         });
 
         if (response.ok) {
-          console.log('response: ' + response);
+          // console.log('response: ' + response);
           const resData = await response.json();
           setUsername(resData.username);
           setPoints(resData.points);
