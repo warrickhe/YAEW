@@ -4,7 +4,7 @@ import * as SecureStore from 'expo-secure-store';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 
-const BACKEND_URL = 'http://192.168.189.182:7272';
+const BACKEND_URL = 'http://10.226.3.49:7272';
 
 //80282bd4-81f7-46d7-9f43-a9fb268289cb
 //47bce7ca-ebd6-475f-a183-91c7c893e03e
@@ -16,6 +16,7 @@ export default function LandingPage({ navigation }) {
     const initializeUuid = async () => {
       let currentUuid = uuidv4(); // Generate a new UUID
       let fetchUUID = await SecureStore.getItemAsync('secure_deviceid');
+      console.log('fetchUUID ' + fetchUUID);
 
       if (fetchUUID) {
         currentUuid = fetchUUID;
@@ -27,7 +28,6 @@ export default function LandingPage({ navigation }) {
     };
 
     initializeUuid();
-    console.log(uuid);
   }, []);
 
   const checkIfUserExists = async () => {
@@ -52,8 +52,9 @@ export default function LandingPage({ navigation }) {
 
       if (response.status === 200) {
         console.log('User exists, redirecting to HOME PAGE');
-        const resData = await response.json();
-        await SecureStore.setItemAsync('username', resData.username);
+        console.log('deviceID from landingpage: ' + uuid);
+        // const resData = await response.json();
+        // await SecureStore.setItemAsync('username', resData.username);
         navigation.navigate('HomePage');
       }
     } catch (error) {

@@ -5,7 +5,7 @@ import * as ImagePicker from 'expo-image-picker';
 
 //192.168.189.182
 
-const BACKEND_URL = 'http://192.168.189.182:7272';
+const BACKEND_URL = 'http://10.226.3.49:7272';
 
 export default function ImagePickerExample() {
   const [image, setImage] = useState(null);
