@@ -7,7 +7,6 @@ import ImagePickerExample from './ImagePickerPage';
 export default function UploadPage() {
   return (
     <View style={styles.container}>
-      <Text>Upload Page</Text>
       <ImagePickerExample />
     </View>
   );
@@ -61,4 +60,3 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
 });
-

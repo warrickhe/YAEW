@@ -101,12 +101,13 @@ const styles = StyleSheet.create({
   },
   titleText: {
     fontSize: 30,
+    marginTop: -50,
     fontWeight: 'bold',
     marginBottom: 8,
   },
   subtitleText: {
     fontSize: 20,
-    color: 'green',
+    color: '#6D9195',
   },
   row: {
     flexDirection: 'row',
