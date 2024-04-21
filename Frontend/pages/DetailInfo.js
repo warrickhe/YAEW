@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
-
+import { LinearGradient } from 'expo-linear-gradient';
 const data = {
   name: 'cat',
   date: 'Apr 19th',
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
         },
   container: {
     flex: 1,
-    backgroundColor: '#CDEBC5',
+    //backgroundColor: '#CDEBC5',
     padding: 10,
   },
   whiteBox: {
