@@ -6,11 +6,13 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 // Pages
 import HomePage from './pages/HomePage';
+import CreateUserPage from './pages/CreateUserPage';
 import IndexPage from './pages/IndexPage';
 import CapturePage from './pages/CapturePage';
 import JournalPage from './pages/JournalPage';
 import ImagePickerExample from './pages/ImagePickerPage';
 import UploadPage from './pages/UploadPage';
+import LandingPage from './pages/LandingPage';
 
 
 const Stack = createNativeStackNavigator();
@@ -18,6 +20,8 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="HomePage">
+        <Stack.Screen name="LandingPage" component={LandingPage} />
+        <Stack.Screen name="CreateUserPage" component={CreateUserPage} />
         <Stack.Screen name="HomePage" component={HomePage} />
         <Stack.Screen name="CapturePage" component={CapturePage} />
         <Stack.Screen name="IndexPage" component={IndexPage} />

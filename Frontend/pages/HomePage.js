@@ -24,6 +24,10 @@ export default function HomePage({ navigation }) {
 
       <View>
         {/* <Button title="Journal Page TODO" onPress={() => console.log('journal pages')}></Button> */}
+        <Button
+          title="Landing Page (TEMP BUTTON)"
+          onPress={() => navigation.navigate('LandingPage')}
+        ></Button>
         <Button title="Index Page" onPress={() => navigation.navigate('IndexPage')}></Button>
         <Button title="Capture!" onPress={() => navigation.navigate('CapturePage')}></Button>
         <Button title="Upload!" onPress={() => navigation.navigate('UploadPage')}></Button>
