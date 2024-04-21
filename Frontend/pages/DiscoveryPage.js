@@ -19,6 +19,7 @@ export default function DiscoveryPage() {
                 <Image source={{ uri: data.image_url }} style={styles.image} />
                 <Text style={styles.DescriptionText}>{data.description}</Text>
                 <View style={styles.okButtonContainer}>
+                //TODO:Add OK navigation, back to homepage?
                 <Button title="OK" onPress={() => { /* Add button functionality here if needed */ }}     color="white" />
             </View>
             </View>
