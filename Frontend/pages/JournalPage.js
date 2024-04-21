@@ -129,9 +129,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   separator: {
-    height: 2,
-    width: '100%',
-    backgroundColor: '#808080',
+    height: 0.5,
+    width: '80%',
+    backgroundColor: '#a9b3c4',
     marginTop: 10,
+    alignSelf: 'center'
   },
 });
