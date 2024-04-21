@@ -13,6 +13,8 @@ import JournalPage from './pages/JournalPage';
 import ImagePickerExample from './pages/ImagePickerPage';
 import UploadPage from './pages/UploadPage';
 import LandingPage from './pages/LandingPage';
+import InfoPage from './pages/InfoPage';
+import DetailInfo from './pages/DetailInfo';
 
 const Stack = createNativeStackNavigator();
 export default function App() {
@@ -26,6 +28,8 @@ export default function App() {
         <Stack.Screen name="IndexPage" component={IndexPage} />
         <Stack.Screen name="UploadPage" component={UploadPage} />
         <Stack.Screen name="JournalPage" component={JournalPage} />
+        <Stack.Screen name="InfoPage" component={InfoPage} />
+        <Stack.Screen name="DetailInfo" component={DetailInfo} />
       </Stack.Navigator>
     </NavigationContainer>
   );
