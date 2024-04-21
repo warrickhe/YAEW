@@ -8,7 +8,6 @@ from bson.json_util import dumps, loads
 import my_secrets
 import google.generativeai as genai
 from functools import lru_cache
-from celery import Celery
 import uuid
 import copy
 
@@ -54,9 +53,9 @@ def get_animal(imagefile):
 def capture_image():
   deviceID = request.args.get("device_id","pixel7")
   imagefile = request.files.get('file').read()
-  animal = get_animal(imagefile)
   image_id = str(uuid.uuid4())
-
+  print(requests.post("https://eaf0-146-152-233-36.ngrok-free.app/classify",files={'file': ('file', imagefile)}))
+  animal = "chicken"
   #below chunk can be CELERIED, don't know the latency on this op but if capture image exceeds 10 seconds in time celery it
   db['captures'].insert_one({"deviceID":deviceID,"date":datetime.datetime.now(),
                              "image_id":image_id,
@@ -64,9 +63,7 @@ def capture_image():
                              "points":5})
   with open(f"./images/{image_id}.png","wb") as my_file:
     my_file.write(imagefile)
-  files={'file': ('file', imagefile)}
   #requests.post("https://56d7-146-152-233-36.ngrok-free.app/classify",files=files)
-  requests.post("https://eaf0-146-152-233-36.ngrok-free.app/classify",files=files)
   description = short_description(animal)
   #put image into database
   return dumps({
