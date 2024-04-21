@@ -131,14 +131,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#fff', // White fill
     borderWidth: 4, // Blue outline
-    borderColor: '#3f84e5', // Blue outline color
+    borderColor: '#44686C', // Blue outline color
     borderRadius: 10, // Adjust border radius as needed
     marginVertical: 10, // Adjust vertical margin as needed
   },
   buttonText: {
     fontSize: 18,
     fontWeight: '700',
-    color: '#3f84e5', // Blue text color
+    color: '#44686C', // Blue text color
   },
   loadingContainer: {
     alignItems: 'center',
@@ -147,5 +147,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 10,
+    marginTop: 10,
+    color: '#44686C',
   },
 });

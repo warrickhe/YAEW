@@ -68,13 +68,14 @@ export default function JournalPage({ navigation }) {
   };
 
   return (
-    <>
+    <><LinearGradient style={styles.landingPage} locations={[0.29, 1]} colors={['#ebf9c9', '#96e6a1']} useAngle={true} angle={168.15}>
       <View style={styles.centeredContainer}>
         <Text style={styles.titleText}>Journal</Text>
-        <Text style={styles.subtitleText}>This is what you've been up to</Text>
+        <Text style={styles.subtitleText}>This is what you've been up to (^_^)</Text>
       </View>
-
+      <View style={styles.separator} />
       <View style={styles.container}>
+        
         <FlatList
           data={journalData}
           renderItem={renderItem}
@@ -82,6 +83,7 @@ export default function JournalPage({ navigation }) {
         />
         
       </View>
+      </LinearGradient>
     </>
     //TODO: Add Home Button
   );
@@ -97,15 +99,15 @@ const styles = StyleSheet.create({
         },
   container: {
     flex: 1,
-    backgroundColor: '#CDEBC5',
+    //backgroundColor: '#CDEBC5',
     justifyContent: 'center',
   },
   centeredContainer: {
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 80,
-    marginBottom: -50,
-    backgroundColor: '#CDEBC5',
+    marginBottom: -70,
+    //backgroundColor: '#CDEBC5',
     width: '100%',
   },
   titleText: {
@@ -115,7 +117,7 @@ const styles = StyleSheet.create({
   },
   subtitleText: {
     fontSize: 16,
-    color: 'green',
+    color: '#222222',
   },
   itemContainer: {
     flexDirection: 'row',

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, Button, Image, View, StyleSheet } from 'react-native';
+import { Text, Button, Image, View, StyleSheet, TouchableOpacity } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -57,8 +57,7 @@ export default function HomePage({ navigation }) {
     >
       <View style={styles.container}>
         <View style={styles.main_buttonContainer}>
-          <Text style={styles.TitleText}>WELCOME BACK</Text>
-          <Text style={styles.TitleText}>{username}!!</Text>
+          <Text style={styles.TitleText}>Welcome back {username} : &#41;</Text>
           <View style={styles.stats_container}>
             <View style={styles.stats_box}>
               <Text style={styles.stats_Text}>Total Points</Text>
@@ -79,20 +78,32 @@ export default function HomePage({ navigation }) {
         <View style={styles.row}>
           {/* Row 1 */}
           <View style={styles.buttonContainer}>
-            <Button title="Upload!" onPress={() => navigation.navigate('ImagePickerPage')} />
+            <Image source={require('../assets/capture.png')} style={styles.icon} />
+            <TouchableOpacity onPress={() => navigation.navigate('ImagePickerPage')}>
+              <Text style={styles.button_text}>CAPTURE</Text>
+            </TouchableOpacity>
           </View>
           <View style={styles.buttonContainer}>
-            <Button title="Journal!" onPress={() => navigation.navigate('JournalPage')} />
+            <Image source={require('../assets/journal.png')} style={styles.icon} />
+            <TouchableOpacity onPress={() => navigation.navigate('JournalPage')}>
+              <Text style={styles.button_text}>JOURNAL</Text>
+            </TouchableOpacity>
           </View>
         </View>
 
         <View style={styles.row}>
           {/* Row 2 */}
           <View style={styles.buttonContainer}>
-            <Button title="Index!" onPress={() => navigation.navigate('IndexPage')} />
+            <Image source={require('../assets/index.png')} style={styles.index_icon} />
+            <TouchableOpacity onPress={() => navigation.navigate('IndexPage')}>
+              <Text style={styles.button_text}>INDEX</Text>
+            </TouchableOpacity>
           </View>
           <View style={styles.buttonContainer}>
-            <Button title="QuizPage" onPress={() => navigation.navigate('QuizPage')} />
+            <Image source={require('../assets/quiz.png')} style={styles.icon} />
+            <TouchableOpacity onPress={() => navigation.navigate('QuizPage')}>
+              <Text style={styles.button_text}>QUIZ</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </View>
@@ -113,31 +124,42 @@ const styles = StyleSheet.create({
   },
   main_buttonContainer: {
     backgroundColor: 'white',
-    padding: 10,
+    padding: 20,
     borderRadius: 10,
     marginTop: 20,
     marginBottom: 10,
     borderWidth: 1,
     borderColor: '#d3d3d3',
-    width: '90%',
-    height: '30%',
+    width: '95%',
+    height: '23%',
     borderRadius: 10,
     borderTopWidth: 5,
     borderTopColor: '#557E82',
     backgroundColor: '#F7FAF9',
     shadowOffset: { width: 4, height: 4 },
     shadowColor: 'black',
-    shadowOpacity: 0.15,
+    shadowOpacity: 0.25,
     shadowRadius: 4,
+    marginTop: '25%',
   },
   buttonContainer: {
     backgroundColor: 'white',
-    padding: 10,
-    borderRadius: 10,
+    padding: 20,
+    borderRadius: 20,
     marginBottom: 10,
-    borderWidth: 1,
-    borderColor: '#d3d3d3',
+    marginTop: 40,
     width: '45%', // Set each button's width to 45% for rows
+    borderRadius: 20,
+    borderWidth: 4,
+    borderColor: '#7EA3A7',
+    backgroundColor: '#F7FAF9',
+    // iOS shadow properties
+    shadowOffset: { width: 0, height: 4 }, // Horizontal and vertical shadow offset
+    shadowOpacity: 0.3, // Shadow opacity
+    shadowRadius: 6, // Shadow blur radius
+
+    // Android shadow properties
+    elevation: 6, // Shadow elevation for Android
   },
   row: {
     flexDirection: 'row',
@@ -173,9 +195,30 @@ const styles = StyleSheet.create({
     shadowOpacity: 1,
     shadowRadius: 4,
     elevation: 4,
+    justifyContent: 'center',
+    alignContent: 'center',
   },
   camera: {
     height: '50%',
     width: '100%',
+  },
+  button_text: {
+    color: '#44686C',
+    fontSize: 20,
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    marginTop: 10,
+  },
+  icon: {
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    marginBottom: 10,
+    marginTop: 10,
+  },
+  index_icon: {
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    marginBottom: 20,
+    marginTop: 10,
   },
 });

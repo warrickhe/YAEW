@@ -54,7 +54,7 @@ export default function IndexPage({ navigation }) {
           <TouchableOpacity key={index} onPress={() => handleImageClick(speciesName)}>
             {/* TODO: CHANGE IMAGE URL */}
             <Image source={require('../images/index-placeholder-image.jpg')} style={styles.image} />
-            <Text style={styles.image}>{speciesName}</Text>
+            <Text style={styles.image_text}>{speciesName}</Text>
           </TouchableOpacity>
         ))}
       </View>
@@ -70,18 +70,24 @@ export default function IndexPage({ navigation }) {
 
   return (
     <>
-     <LinearGradient style={styles.landingPage} locations={[0.29, 1]} colors={['#ebf9c9', '#96e6a1']} useAngle={true} angle={168.15}>
-      <View style={styles.centeredContainer}>
-        <Text style={styles.titleText}>Index</Text>
-        <Text style={styles.subtitleText}>Total Species Collected: {indexData.length}</Text>
-      </View>
-      <View style={styles.container}>
-        <FlatList
-          data={groupedData}
-          renderItem={renderItem}
-          keyExtractor={(item, index) => index.toString()}
-        />
-      </View>
+      <LinearGradient
+        style={styles.landingPage}
+        locations={[0.29, 1]}
+        colors={['#ebf9c9', '#96e6a1']}
+        useAngle={true}
+        angle={168.15}
+      >
+        <View style={styles.centeredContainer}>
+          <Text style={styles.titleText}>Index</Text>
+          <Text style={styles.subtitleText}>Total Species Collected: {indexData.length}</Text>
+        </View>
+        <View style={styles.container}>
+          <FlatList
+            data={groupedData}
+            renderItem={renderItem}
+            keyExtractor={(item, index) => index.toString()}
+          />
+        </View>
       </LinearGradient>
     </>
   );
@@ -92,11 +98,11 @@ export default function IndexPage({ navigation }) {
 const styles = StyleSheet.create({
   landingPage: {
     flex: 1,
-    width: "100%",
+    width: '100%',
     height: 852,
-    backgroundColor: "transparent",
-    overflow: "hidden"
-    },
+    backgroundColor: 'transparent',
+    overflow: 'hidden',
+  },
   centeredContainer: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -114,15 +120,17 @@ const styles = StyleSheet.create({
     marginTop: 0,
     fontWeight: 'bold',
     marginBottom: 8,
+    color: '#2F5361',
   },
   subtitleText: {
     fontSize: 20,
     color: '#6D9195',
+    marginBottom: 30,
   },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 30,
+    marginBottom: 5,
     marginLeft: 20,
     marginRight: 20,
   },
@@ -130,5 +138,15 @@ const styles = StyleSheet.create({
     width: 100, // Adjust width as needed
     height: 100, // Adjust height as needed
     margin: 5, // Add margin around each image
+    borderRadius: 10,
+  },
+  image_text: {
+    textAlign: 'center',
+    width: 100, // Adjust width as needed
+    height: 100, // Adjust height as needed
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    fontSize: 11,
+    color: '#2F5361',
   },
 });
