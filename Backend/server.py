@@ -54,8 +54,7 @@ def capture_image():
   deviceID = request.args.get("device_id","pixel7")
   imagefile = request.files.get('file').read()
   image_id = str(uuid.uuid4())
-  print(requests.post("https://eaf0-146-152-233-36.ngrok-free.app/classify",files={'file': ('file', imagefile)}))
-  animal = "chicken"
+  animal = requests.post("https://eaf0-146-152-233-36.ngrok-free.app/classify",files={'file': ('file', imagefile)}).json()['result']
   #below chunk can be CELERIED, don't know the latency on this op but if capture image exceeds 10 seconds in time celery it
   db['captures'].insert_one({"deviceID":deviceID,"date":datetime.datetime.now(),
                              "image_id":image_id,
