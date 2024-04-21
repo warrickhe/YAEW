@@ -80,6 +80,7 @@ export default function JournalPage({ navigation }) {
           renderItem={renderItem}
           ItemSeparatorComponent={ItemSeparatorComponent}
         />
+            //TODO: Add Home Button
       </View>
     </>
   );
