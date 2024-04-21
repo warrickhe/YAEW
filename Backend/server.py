@@ -60,21 +60,23 @@ def capture_image():
   deviceID = request.args.get("device_id","pixel7")
   imagefile = request.files.get('file').read()
   image_id = str(uuid.uuid4())
+  print("getting somewhere")
   animal = requests.post("https://eaf0-146-152-233-36.ngrok-free.app/classify",files={'file': ('file', imagefile)}).json()['result']
   #below chunk can be CELERIED, don't know the latency on this op but if capture image exceeds 10 seconds in time celery it
-  db['captures'].insert_one({"deviceID":deviceID,"date":datetime.datetime.now(),
-                             "image_id":image_id,
-                             "animal":animal,
-                             "points":5})
   with open(f"./images/{image_id}.png","wb") as my_file:
     my_file.write(imagefile)
   #requests.post("https://56d7-146-152-233-36.ngrok-free.app/classify",files=files)
   description = short_description(animal)
+  print(animal)
   count = len(list(db['captures'].find({"deviceID":deviceID,"animal":animal})))
   #put image into database
   new_point_bonus = 0 if count>0 else 5
   rarity = get_rarity(animal)
   db['users'].find_one_and_update({"deviceID":deviceID},{'$inc':{'points':new_point_bonus+5+rarity}})
+  db['captures'].insert_one({"deviceID":deviceID,"date":datetime.datetime.now(),
+                             "image_id":image_id,
+                             "animal":animal,
+                             "points":new_point_bonus+5+rarity})
   return dumps({
     "animal": animal,
     "description": description,
@@ -175,7 +177,9 @@ def make_quiz(species):
   question = result[0]
   choices = result[1:5]
   answer = choices.index(result[-1])
-  return {"question":question,"choices":choices,"answer":answer}
+  options = [{'answer':choice,'correct':False} for choice in choices]
+  options[answer]['correct'] = True
+  return {"question":question,"options":options}
 
 @app.route('/quiz', methods=['GET'])
 def get_quiz():
@@ -191,4 +195,5 @@ if __name__ == '__main__':
   model = genai.GenerativeModel('gemini-1.5-pro-latest')
   faster_model = genai.GenerativeModel('gemini-pro')
   genai.configure(api_key=gemini_api_key)
+  print("working")
   app.run(host="0.0.0.0", port=7272, debug=True)
