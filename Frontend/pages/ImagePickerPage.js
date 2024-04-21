@@ -1,13 +1,15 @@
 import { useState, useEffect } from 'react';
-import { Text, Button, Image, View, StyleSheet } from 'react-native';
+import { Text, Button, Image, View, StyleSheet, ActivityIndicator } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import * as SecureStore from 'expo-secure-store';
 
 const BACKEND_URL = 'http://192.168.1.100:7272';
 
-export default function ImagePickerExample() {
+export default function ImagePickerExample({ navigation }) {
   const [deviceID, setDeviceID] = useState('');
   const [image, setImage] = useState(null);
+
+  const [sentToBackend, setSentToBackend] = useState(false);
 
   useEffect(() => {
     const fetchDeviceID = async () => {
@@ -40,6 +42,8 @@ export default function ImagePickerExample() {
       return;
     }
 
+    setSentToBackend(true);
+
     const formattedData = new FormData();
     formattedData.append('file', {
       uri: image,
@@ -61,6 +65,7 @@ export default function ImagePickerExample() {
 
       if (response.ok) {
         console.log('Image uploaded successfully!');
+        navigation.navigate('DiscoveryPage');
       } else {
         console.error('Error uploading image', response.statusText);
       }
@@ -79,6 +84,14 @@ export default function ImagePickerExample() {
             <Button title="Send Image to Backend" onPress={sendImageToBackend} />
           </>
         )}
+        {sentToBackend && (
+          <>
+            <View>
+              <Text style={styles.LoadingTitleText}>Analyzing...</Text>
+              <ActivityIndicator size="large" />
+            </View>
+          </>
+        )}
       </View>
     </>
   );
@@ -90,11 +103,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#CDEBC5',
     justifyContent: 'center',
   },
-  button_container:{
-    backgroundColor:'white',
-    padding:5,
+  button_container: {
+    backgroundColor: 'white',
+    padding: 5,
   },
-  
+
   titleText: {
     fontSize: 30,
     fontWeight: 'bold',
@@ -128,5 +141,18 @@ const styles = StyleSheet.create({
     backgroundColor: '#808080',
     marginTop: 10,
   },
+  loadingWhiteBox: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+    marginBottom: 20,
+    marginTop: 300,
+  },
+  LoadingTitleText: {
+    fontSize: 25,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    marginTop: 20,
+    marginLeft: 75,
+  },
 });
-

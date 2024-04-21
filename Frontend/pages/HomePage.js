@@ -67,18 +67,18 @@ export default function HomePage({ navigation }) {
             </View>
           </View>
         </View>
-        
+
         {/* Buttons in Rows */}
         <View style={styles.row}>
           {/* Row 1 */}
           <View style={styles.buttonContainer}>
-            <Button title="Upload!" onPress={() => navigation.navigate('UploadPage')} />
+            <Button title="Upload!" onPress={() => navigation.navigate('ImagePickerPage')} />
           </View>
           <View style={styles.buttonContainer}>
             <Button title="Journal!" onPress={() => navigation.navigate('JournalPage')} />
           </View>
         </View>
-        
+
         <View style={styles.row}>
           {/* Row 2 */}
           <View style={styles.buttonContainer}>

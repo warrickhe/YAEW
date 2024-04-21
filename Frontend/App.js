@@ -16,6 +16,7 @@ import LandingPage from './pages/LandingPage';
 import InfoPage from './pages/InfoPage';
 import DetailInfo from './pages/DetailInfo';
 import QuizPage from './pages/QuizPage';
+import DiscoveryPage from './pages/DiscoveryPage';
 
 const Stack = createNativeStackNavigator();
 export default function App() {
@@ -32,6 +33,8 @@ export default function App() {
         <Stack.Screen name="InfoPage" component={InfoPage} />
         <Stack.Screen name="DetailInfo" component={DetailInfo} />
         <Stack.Screen name="QuizPage" component={QuizPage} />
+        <Stack.Screen name="DiscoveryPage" component={DiscoveryPage} />
+        <Stack.Screen name="ImagePickerPage" component={ImagePickerExample} />
       </Stack.Navigator>
     </NavigationContainer>
   );
