@@ -1,108 +1,125 @@
-//import React, { useEffect, useState } from 'react';
-//import { View, Image, TouchableOpacity, Text, FlatList, StyleSheet } from 'react-native';
-//import axios from 'axios';
-
-/*const AnimalIndex = ({ navigation }) => {
-  const [animals, setAnimals] = useState([]);
-
-  // Fetch animals from the backend API
-  useEffect(() => {
-    const fetchAnimals = async () => {
-      try {
-        const response = await axios.get('YOUR_BACKEND_API_ENDPOINT');
-        setAnimals(response.data);
-      } catch (error) {
-        console.error('Error fetching animals:', error);
-      }
-    };
-    
-    fetchAnimals();
-  }, []);
-
-  // Render each animal as a clickable image
-  const renderItem = ({ item }) => (
-    <TouchableOpacity onPress={() => navigation.navigate('AnimalDetail', { animal: item })}>
-      <View style={styles.animalContainer}>
-        <Image source={{ uri: item.imageUrl }} style={styles.animalImage} />
-        <Text style={styles.animalName}>{item.name}</Text>
-      </View>
-    </TouchableOpacity>
-  );*/
-
-/*return (
-    <View style={styles.container}>
-      <FlatList
-        data={animals}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-        numColumns={4} // Display items in a grid with 2 columns
-      />
-    </View>
-  );
-};*/
 import React from 'react';
-import { View, Text, Image, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { View, Image, FlatList, StyleSheet, Text, TouchableOpacity } from 'react-native';
 
-const dummyData = [
-  {
-    id: '1',
-    name: 'Lion',
-    image: require('../images/Warrick.png'), // Use a placeholder image URL
-  },
-  {
-    id: '2',
-    name: 'Elephant',
-    image: require('../images/Warrick.png'),
-  },
-  {
-    id: '3',
-    name: 'Tiger',
-    image: require('../images/Warrick.png'),
-  },
-  {
-    id: '4',
-    name: 'Giraffe',
-    image: require('../images/Warrick.png'),
-  },
-];
+/* useEffect(() => {
+        // Function to fetch data from multiple sources
+        async function fetchData() {
+            try {
+                // Fetch data from source 1
+                const response1 = await fetch('https://api.source1.com/data');
+                const data1 = await response1.json();
 
-const IndexPage = () => {
-  const navigation = useNavigation();
+                // Fetch data from source 2
+                const response2 = await fetch('https://api.source2.com/data');
+                const data2 = await response2.json();
 
-  const renderItem = ({ item }) => (
-    <TouchableOpacity
-      style={styles.item}
-      onPress={() => navigation.navigate('AnimalDetails', { animal: item })}
-    >
-      <Image source={{ uri: item.image }} style={styles.image} />
-      <Text style={styles.name}>{item.name}</Text>
-    </TouchableOpacity>
-  );
+                // Combine data from both sources
+                const combinedData = [...data1, ...data2];
 
-  return (
-    <FlatList
-      data={dummyData}
-      renderItem={renderItem}
-      keyExtractor={(item) => item.id}
-      numColumns={4}
-    />
-  );
+                // Update the state with the combined data
+                setData(combinedData);
+            } catch (error) {
+                console.error('Error fetching data:', error);·
+            }
+        }
+
+        // Call the fetchData function
+        fetchData();
+    }, []);*/
+
+
+const Data = {
+    username: 'warrick',
+    total_captures: 2,
+    unique_species: 2,
+    points: 10,
 };
 
-export default IndexPage;
+const data1 = [
+    { image_url: 'https://static.boredpanda.com/blog/wp-content/uploads/2018/04/5acb63d83493f__700-png.jpg' },
+    { image_url: 'https://static.boredpanda.com/blog/wp-content/uploads/2018/04/5acb63d83493f__700-png.jpg' },
+    { image_url: 'https://static.boredpanda.com/blog/wp-content/uploads/2018/04/5acb63d83493f__700-png.jpg' },
+    { image_url: 'https://static.boredpanda.com/blog/wp-content/uploads/2018/04/5acb63d83493f__700-png.jpg' },
+    { image_url: 'https://static.boredpanda.com/blog/wp-content/uploads/2018/04/5acb63d83493f__700-png.jpg' },
+    { image_url: 'https://static.boredpanda.com/blog/wp-content/uploads/2018/04/5acb63d83493f__700-png.jpg' },
+    // Add more items as needed
+];
+
+export default function IndexPage({ navigation }) {
+    // Function to handle navigation when an image is clicked
+    const handleImageClick = (image) => {
+        // Navigate to screen "a" and pass the clicked image data as a parameter
+        navigation.navigate('HomePage', { data: image });
+    };
+
+    // Function to render each row of three images
+    const renderItem = ({ item }) => {
+        return (
+            <View style={styles.row}>
+                {item.map((image, index) => (
+                    <TouchableOpacity key={index} onPress={() => handleImageClick(image)}>
+                        <Image source={{ uri: image.image_url }} style={styles.image} />
+                    </TouchableOpacity>
+                ))}
+            </View>
+        );
+    };
+
+    // Group data into rows of three
+    const groupedData = [];
+    for (let i = 0; i < data1.length; i += 3) {
+        groupedData.push(data1.slice(i, i + 3));
+    }
+
+    return (
+        <>
+            <View style={styles.centeredContainer}>
+                <Text style={styles.titleText}>Index</Text>
+                <Text style={styles.subtitleText}>Total Species: {Data.unique_species}</Text>
+            </View>
+            <View style={styles.container}>
+                <FlatList
+                    data={groupedData}
+                    renderItem={renderItem}
+                    keyExtractor={(item, index) => index.toString()}
+                />
+            </View>
+        </>
+    );
+}
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  image: {
-    width: 200,
-    height: 200,
-  },
-  item: {
-    color: 'red',
-  },
+    centeredContainer: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingVertical: 80,
+        marginBottom: -50,
+        backgroundColor: '#CDEBC5',
+        width: '100%',
+    },
+    container: {
+        flex: 1,
+        backgroundColor: '#CDEBC5', // Fill the screen with green
+    },
+    titleText: {
+        fontSize: 30,
+        fontWeight: 'bold',
+        marginBottom: 8,
+    },
+    subtitleText: {
+        fontSize: 20,
+        color: 'green',
+    },
+    row: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: 30,
+        marginLeft: 20,
+        marginRight: 20,
+    },
+    image: {
+        width: 100, // Adjust width as needed
+        height: 100, // Adjust height as needed
+        margin: 5, // Add margin around each image
+    },
 });
