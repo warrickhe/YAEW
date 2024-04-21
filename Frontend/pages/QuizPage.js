@@ -32,7 +32,7 @@ const quizData = [
     },
 ];
 
-export default function QuizPage() {
+export default function QuizPage(navigation) {
     // State variables
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [selectedOptionIndex, setSelectedOptionIndex] = useState(null);
