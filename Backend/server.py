@@ -27,7 +27,6 @@ def hello():
 @app.route('/getid', methods=['GET'])
 def get_id():
   deviceID = request.args.get("device_id")
-  print(deviceID)
   res = db['users'].find_one({"deviceID":deviceID})
   if res:
     return jsonify({'username':res['username']})
@@ -89,11 +88,13 @@ def get_collection():
 @app.route('/profile', methods=['GET'])
 def get_profile():
   deviceID = request.args.get("device_id")
+  print(deviceID)
   res = db['captures'].find({"deviceID":deviceID})
   total_captures = len(list(res))
   res = res.distinct("animal")
   unique_species = len(list(res))
-  user = db['users'].find_one({"device_id":deviceID})
+  #possible error with CURSOR above
+  user = db['users'].find_one({"deviceID":deviceID})
   points = user['points']
   username = user['username']
   return dumps({"username":username,"total_captures":total_captures,"unique_species":unique_species,"points":points})
