@@ -15,6 +15,7 @@ import UploadPage from './pages/UploadPage';
 import LandingPage from './pages/LandingPage';
 import InfoPage from './pages/InfoPage';
 import DetailInfo from './pages/DetailInfo';
+import QuizPage from './pages/QuizPage';
 
 const Stack = createNativeStackNavigator();
 export default function App() {
@@ -30,10 +31,26 @@ export default function App() {
         <Stack.Screen name="JournalPage" component={JournalPage} />
         <Stack.Screen name="InfoPage" component={InfoPage} />
         <Stack.Screen name="DetailInfo" component={DetailInfo} />
+        <Stack.Screen name="QuizPage" component={QuizPage} />
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
+
+// WARRICK's IMAGE PICKER CODE (WORKS)
+//
+// export default function App() {
+//   return (
+//     <View style={styles.container}>
+//       <Text>efedfe</Text>
+//       <View style={styles.camera}>
+//         <CapturePage style={styles.camera} />
+//       </View>
+//       <ImagePickerExample />
+//       <StatusBar style="auto" />
+//     </View>
+//   );
+// }
 
 const styles = StyleSheet.create({
   container: {

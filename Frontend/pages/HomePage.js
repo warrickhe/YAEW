@@ -72,6 +72,7 @@ export default function HomePage({ navigation }) {
         <Button title="Index!" onPress={() => navigation.navigate('IndexPage')}></Button>
         <Button title="Info!" onPress={() => navigation.navigate('InfoPage')}></Button>
         <Button title="DetailInfo" onPress={() => navigation.navigate('DetailInfo')}></Button>
+        <Button title="QuizPage" onPress={() => navigation.navigate('QuizPage')}></Button>
       </View>
     </>
   );
