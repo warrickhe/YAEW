@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
   getStartedButton: {
       position: "absolute",
       top: 500,
-      left: 60,
+      left: 50,
       width: 300, // Adjust width as needed
       height: 60, // Adjust height as needed
       backgroundColor: "#fff",
