@@ -38,6 +38,7 @@ export default function DiscoveryPage({ navigation, route }) {
   }
 
   return (
+    <LinearGradient style={styles.landingPage} locations={[0.29, 1]} colors={['#ebf9c9', '#96e6a1']} useAngle={true} angle={168.15}>
     <View style={styles.container}>
       {/* White box containing the quiz question */}
       <View style={styles.whiteBox}>
@@ -58,6 +59,7 @@ export default function DiscoveryPage({ navigation, route }) {
 
       {/* OK button */}
     </View>
+    </LinearGradient>
   );
 }
 
@@ -67,6 +69,13 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: '#CDEBC5',
   },
+  landingPage: {
+    flex: 1,
+    width: "100%",
+    height: 852,
+    backgroundColor: "transparent",
+    overflow: "hidden"
+    },
   image: {
     width: 300, // Adjust width as needed
     height: 200, // Adjust height as needed

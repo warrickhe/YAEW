@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, FlatList, Image } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import base64 from 'base-64';
-
+import { LinearGradient } from 'expo-linear-gradient';
 const BACKEND_URL = 'http://192.168.1.100:7272';
 
 const ItemSeparatorComponent = () => <View style={styles.separator} />;
@@ -88,6 +88,13 @@ export default function JournalPage({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+    landingPage: {
+        flex: 1,
+        width: "100%",
+        height: 852,
+        backgroundColor: "transparent",
+        overflow: "hidden"
+        },
   container: {
     flex: 1,
     backgroundColor: '#CDEBC5',

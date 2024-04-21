@@ -26,6 +26,7 @@ export default function App() {
   }
 
   return (
+    <LinearGradient style={styles.landingPage} locations={[0.29, 1]} colors={['#ebf9c9', '#96e6a1']} useAngle={true} angle={168.15}>
     <View style={styles.container}>
       <Camera style={styles.camera} type={type}>
         <View style={styles.buttonContainer}>
@@ -35,10 +36,18 @@ export default function App() {
         </View>
       </Camera>
     </View>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
+  landingPage: {
+    flex: 1,
+    width: "100%",
+    height: 852,
+    backgroundColor: "transparent",
+    overflow: "hidden"
+    },
   container: {
     flex: 1,
     justifyContent: 'center',

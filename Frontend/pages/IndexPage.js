@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Image, FlatList, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const BACKEND_URL = 'http://192.168.1.100:7272';
 
@@ -69,6 +70,7 @@ export default function IndexPage({ navigation }) {
 
   return (
     <>
+     <LinearGradient style={styles.landingPage} locations={[0.29, 1]} colors={['#ebf9c9', '#96e6a1']} useAngle={true} angle={168.15}>
       <View style={styles.centeredContainer}>
         <Text style={styles.titleText}>Index</Text>
         <Text style={styles.subtitleText}>Total Species Collected: {indexData.length}</Text>
@@ -80,6 +82,7 @@ export default function IndexPage({ navigation }) {
           keyExtractor={(item, index) => index.toString()}
         />
       </View>
+      </LinearGradient>
     </>
   );
 }
@@ -87,21 +90,28 @@ export default function IndexPage({ navigation }) {
 //TODO: Add Home Button.
 
 const styles = StyleSheet.create({
+  landingPage: {
+    flex: 1,
+    width: "100%",
+    height: 852,
+    backgroundColor: "transparent",
+    overflow: "hidden"
+    },
   centeredContainer: {
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 80,
     marginBottom: -50,
-    backgroundColor: '#CDEBC5',
+    //backgroundColor: '#CDEBC5',
     width: '100%',
   },
   container: {
     flex: 1,
-    backgroundColor: '#CDEBC5', // Fill the screen with green
+    //backgroundColor: '#CDEBC5', // Fill the screen with green
   },
   titleText: {
     fontSize: 30,
-    marginTop: -50,
+    marginTop: 0,
     fontWeight: 'bold',
     marginBottom: 8,
   },

@@ -3,6 +3,7 @@ import { View, Text, Image, ScrollView, StyleSheet, TouchableOpacity } from 'rea
 import * as SecureStore from 'expo-secure-store';
 import base64 from 'base-64';
 import FlipCard from 'react-native-flip-card';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const BACKEND_URL = 'http://192.168.1.100:7272';
 
@@ -176,6 +177,13 @@ const styles = StyleSheet.create({
     marginTop: 10,
     alignItems: 'center',
   },
+  landingPage: {
+    flex: 1,
+    width: "100%",
+    height: 852,
+    backgroundColor: "transparent",
+    overflow: "hidden"
+    },
   bubbleText: {
     color: 'white',
   },
