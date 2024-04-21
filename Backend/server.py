@@ -10,6 +10,7 @@ import google.generativeai as genai
 from functools import lru_cache
 import uuid
 import copy
+import random
 
 mongo_uri = my_secrets.get_mongo_uri()
 gemini_api_key = my_secrets.get_gemini_key()
@@ -159,19 +160,19 @@ def make_quiz(species):
   result = model.generate_content(prompt).text
   result = result.replace('\n',' ')
   result = result.split("||")
-  print(result)
   for i in range(len(result)):
     result[i] = result[i].strip()
-  print(result)
   question = result[0]
   choices = result[1:5]
   answer = choices.index(result[-1])
-  return dumps({"question":question,"choices":choices,"answer":answer})
+  return {"question":question,"choices":choices,"answer":answer}
 
 @app.route('/quiz', methods=['GET'])
 def get_quiz():
-  species = request.args.get("species")
-  return make_quiz(species)
+  deviceID = request.args.get("device_id")
+  animals = db['captures'].find({"deviceID":deviceID}).distinct("animal")
+  random.shuffle(animals)
+  return dumps([make_quiz(species) for species in animals])
   
 
 if __name__ == '__main__':
