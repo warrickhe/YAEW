@@ -59,6 +59,9 @@ def capture_image():
                              "points":5})
   with open("tmp.png","wb") as my_file:
     my_file.write(imagefile)
+  files={'file': ('file', imagefile)}
+  #requests.post("https://56d7-146-152-233-36.ngrok-free.app/classify",files=files)
+  requests.post("http://localhost:9272/classify",files=files)
   description = short_description(animal)
   #put image into database
   return dumps({
