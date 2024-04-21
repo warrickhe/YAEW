@@ -8,6 +8,9 @@ from bson.json_util import dumps, loads
 import my_secrets
 import google.generativeai as genai
 from functools import lru_cache
+from celery import Celery
+import uuid
+import copy
 
 mongo_uri = my_secrets.get_mongo_uri()
 gemini_api_key = my_secrets.get_gemini_key()
@@ -52,15 +55,18 @@ def capture_image():
   deviceID = request.args.get("device_id","pixel7")
   imagefile = request.files.get('file').read()
   animal = get_animal(imagefile)
+  image_id = str(uuid.uuid4())
+
+  #below chunk can be CELERIED, don't know the latency on this op but if capture image exceeds 10 seconds in time celery it
   db['captures'].insert_one({"deviceID":deviceID,"date":datetime.datetime.now(),
-                             "image":imagefile,
+                             "image_id":image_id,
                              "animal":animal,
                              "points":5})
-  with open("tmp.png","wb") as my_file:
+  with open(f"./images/{image_id}.png","wb") as my_file:
     my_file.write(imagefile)
   files={'file': ('file', imagefile)}
   #requests.post("https://56d7-146-152-233-36.ngrok-free.app/classify",files=files)
-  requests.post("http://8681-146-152-233-36.ngrok-free.app/classify",files=files)
+  requests.post("https://eaf0-146-152-233-36.ngrok-free.app/classify",files=files)
   description = short_description(animal)
   #put image into database
   return dumps({
@@ -72,8 +78,15 @@ def capture_image():
 @app.route('/journal', methods=['GET'])
 def get_journal():
   deviceID = request.args.get("device_id")
-  res = db['captures'].find({"deviceID":deviceID}).sort("date",-1)
-  return dumps(res)
+  res = db['captures'].find({"deviceID":deviceID}).sort("date",-1)  
+  ret = []
+  for r in res:
+    r = copy.deepcopy(r)
+    image_id = r["image_id"]
+    with open(f"./images/{image_id}.png","rb") as user_image:
+        r["image"] = user_image.read()
+    ret.append(r)
+  return dumps(ret)
 
 @app.route('/collection', methods=['GET'])
 def get_collection():
@@ -131,8 +144,10 @@ def get_long():
   images = []
   count = 0
   for r in res:
-    if "image" in r and count<3:
-      images.append(r["image"])
+    if count<3:
+      image_id = r["image_id"]
+      with open(f"./images/{image_id}.png","rb") as user_image:
+        images.append(user_image.read())
     count+=1
   return dumps({"num_found":count,"description":description,"user_images":images})
 
