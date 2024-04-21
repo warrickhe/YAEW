@@ -143,15 +143,19 @@ def get_find():
 
 @lru_cache(maxsize=3000)
 def make_quiz(species): 
-  prompt = f"Give me a 4 choice multiple choice question about {species}. Make the format: (question)\n"\
-    "a)(answer1)  \nb)(answer1)\nc)(answer1)\nd)(answer1)"
-  ans_prompt = "What is the answer?"
-  chat = model.start_chat(history=[])
-  question = chat.send_message(prompt).text
-  answer = chat.send_message(ans_prompt).text
-  print(answer)
-  answer = answer[answer.find(')')-1]
-  return dumps({"question":question,"answer":answer})
+  format = "question||choice 1||choice 2||choice 3||choice 4||answer"
+  prompt = f"Give me a multiple choice question about {species} in the format: {format}"
+  result = model.generate_content(prompt).text
+  result = result.replace('\n',' ')
+  result = result.split("||")
+  print(result)
+  for i in range(len(result)):
+    result[i] = result[i].strip()
+  print(result)
+  question = result[0]
+  choices = result[1:5]
+  answer = choices.index(result[-1])
+  return dumps({"question":question,"choices":choices,"answer":answer})
 
 @app.route('/quiz', methods=['GET'])
 def get_quiz():
