@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
   },
 buttonText: {
         
-        fontSize: 25, // Adjust the text size here
+        fontSize: 20, // Adjust the text size here
         color: 'black', // Text color
         textAlign: 'center', // Center the text
     },
