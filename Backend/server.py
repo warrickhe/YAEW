@@ -1,5 +1,6 @@
 import requests
 import sys
+import datetime
 from flask import Flask, request, jsonify, Response
 from flask_cors import CORS
 import pymongo
@@ -38,20 +39,33 @@ def check_user():
   username = request.args.get("username")
   deviceID = request.args.get("device_id")
   res = db['users'].find_one({"username":username})
-  if res:
+  if res: 
     return Response(status=204)
   #success example: {'_id': ObjectId('6623374f09b87299ae8c5f63'), 'deviceID': 'pixel7', 'username': 'warrick'}
-  db['users'].insert_one({'device_id':deviceID,'username':username,'points':0})
+  db['users'].insert_one({'deviceID':deviceID,'username':username,'points':0})
   return Response(status=200)
+
+def get_animal(imagefile):
+  return "chicken"
 
 @app.route('/capture', methods=['POST'])
 def capture_image():
-  deviceID = request.args.get("device_id")
-  ret = {
-    "animal": "chicken"
-  }
+  deviceID = request.args.get("device_id","pixel7")
+  imagefile = request.files.get('file').read()
+  animal = get_animal(imagefile)
+  db['captures'].insert_one({"deviceID":deviceID,"date":datetime.datetime.now(),
+                             "image":imagefile,
+                             "animal":animal,
+                             "points":5})
+  with open("tmp.png","wb") as my_file:
+    my_file.write(imagefile)
+  description = short_description(animal)
   #put image into database
-  return dumps(ret)
+  return dumps({
+    "animal": animal,
+    "description": description,
+    "points": 5
+  })
 
 @app.route('/journal', methods=['GET'])
 def get_journal():
@@ -85,13 +99,13 @@ def get_profile():
 def short_description(species):
   short_prompt = f"Make a short but funny description of a {species}."
   short_resp = faster_model.generate_content(short_prompt).text
-  return dumps({"description":short_resp})
+  return short_resp
 
 @lru_cache(maxsize=3000)
 def long_description(species):
   detailed_prompt = f"Give an 100 to 150 word description of a {species}."
   long_resp = model.generate_content(detailed_prompt).text
-  return dumps({"description":long_resp})
+  return long_resp
 
 @lru_cache(maxsize=3000)
 def how_to_find(species): 
@@ -107,7 +121,16 @@ def get_short():
 @app.route('/info/long', methods=['GET'])
 def get_long():
   species = request.args.get("species")
-  return long_description(species)
+  description = long_description(species)
+  deviceID = request.args.get("device_id")
+  res = db['captures'].find({"deviceID":deviceID,"animal":species}).sort("date",-1)
+  images = []
+  count = 0
+  for r in res:
+    if "image" in r and count<3:
+      images.append(r["image"])
+    count+=1
+  return dumps({"num_found":count,"description":description,"user_images":images})
 
 @app.route('/info/find', methods=['GET'])
 def get_find():
