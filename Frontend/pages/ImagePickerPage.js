@@ -71,8 +71,8 @@ export default function ImagePickerExample() {
 
   return (
     <>
-      <View>
-        <Button title="Pick an Image" onPress={pickImage} />
+      <View style={styles.container}>
+        <Button title="Pick an Image" onPress={pickImage} style={styles.button_container} />
         {image && (
           <>
             <Text>Image Picked!</Text>
@@ -87,11 +87,46 @@ export default function ImagePickerExample() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
+    backgroundColor: '#CDEBC5',
     justifyContent: 'center',
   },
+  button_container:{
+    backgroundColor:'white',
+    padding:5,
+  },
+  
+  titleText: {
+    fontSize: 30,
+    fontWeight: 'bold',
+    marginBottom: 8,
+  },
+  subtitleText: {
+    fontSize: 16,
+    color: 'green',
+  },
+  itemContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 50,
+    marginTop: 10,
+    width: '100%', // Full-width container
+  },
   image: {
-    width: 200,
-    height: 200,
+    width: 50,
+    height: 50,
+    marginRight: 10,
+  },
+  textContainer: {
+    flex: 1, // Take up remaining space in the row
+  },
+  item: {
+    fontSize: 16,
+  },
+  separator: {
+    height: 2,
+    width: '100%',
+    backgroundColor: '#808080',
+    marginTop: 10,
   },
 });
+
