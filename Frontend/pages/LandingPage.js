@@ -4,7 +4,7 @@ import * as SecureStore from 'expo-secure-store';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 
-const BACKEND_URL = 'http://10.226.3.49:7272';
+const BACKEND_URL = 'http://192.168.1.100:7272';
 
 //80282bd4-81f7-46d7-9f43-a9fb268289cb
 //47bce7ca-ebd6-475f-a183-91c7c893e03e

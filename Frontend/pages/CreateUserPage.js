@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { TextInput, Text, Button, Image, View, StyleSheet } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 
-const BACKEND_URL = 'http://10.226.3.49:7272';
+const BACKEND_URL = 'http://192.168.1.100:7272';
 
 export default function CreateUserPage({ navigation }) {
   const [username, setUsername] = useState('');

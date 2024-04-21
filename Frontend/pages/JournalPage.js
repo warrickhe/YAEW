@@ -3,7 +3,7 @@ import { Text, View, StyleSheet, FlatList, Image } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import base64 from 'base-64';
 
-const BACKEND_URL = 'http://10.226.3.49:7272';
+const BACKEND_URL = 'http://192.168.1.100:7272';
 
 const ItemSeparatorComponent = () => <View style={styles.separator} />;
 
