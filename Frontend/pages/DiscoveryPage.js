@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Image, StyleSheet, Button } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const BACKEND_URL = 'http://192.168.1.100:7272';
 
@@ -38,27 +39,33 @@ export default function DiscoveryPage({ navigation, route }) {
   }
 
   return (
-    <LinearGradient style={styles.landingPage} locations={[0.29, 1]} colors={['#ebf9c9', '#96e6a1']} useAngle={true} angle={168.15}>
-    <View style={styles.container}>
-      {/* White box containing the quiz question */}
-      <View style={styles.whiteBox}>
-        <Text style={styles.TitleText}>You Found A {data.animal}!</Text>
-        <Text style={styles.PointText}>+5 points!</Text>
-        {/* <Image source={{ uri: data.image_url }} style={styles.image} /> */}
-        {/* <Text style={styles.DescriptionText}>{data.description}</Text> */}
-        <View style={styles.okButtonContainer}>
-          <Button
-            title="OK"
-            onPress={() => {
-              handleClick();
-            }}
-            color="white"
-          />
+    <LinearGradient
+      style={styles.landingPage}
+      locations={[0.29, 1]}
+      colors={['#ebf9c9', '#96e6a1']}
+      useAngle={true}
+      angle={168.15}
+    >
+      <View style={styles.container}>
+        {/* White box containing the quiz question */}
+        <View style={styles.whiteBox}>
+          <Text style={styles.TitleText}>You Found A {data.animal}!</Text>
+          <Text style={styles.PointText}>+5 points!</Text>
+          {/* <Image source={{ uri: data.image_url }} style={styles.image} /> */}
+          {/* <Text style={styles.DescriptionText}>{data.description}</Text> */}
+          <View style={styles.okButtonContainer}>
+            <Button
+              title="OK"
+              onPress={() => {
+                handleClick();
+              }}
+              color="white"
+            />
+          </View>
         </View>
-      </View>
 
-      {/* OK button */}
-    </View>
+        {/* OK button */}
+      </View>
     </LinearGradient>
   );
 }
@@ -71,11 +78,11 @@ const styles = StyleSheet.create({
   },
   landingPage: {
     flex: 1,
-    width: "100%",
+    width: '100%',
     height: 852,
-    backgroundColor: "transparent",
-    overflow: "hidden"
-    },
+    backgroundColor: 'transparent',
+    overflow: 'hidden',
+  },
   image: {
     width: 300, // Adjust width as needed
     height: 200, // Adjust height as needed
@@ -85,11 +92,11 @@ const styles = StyleSheet.create({
   whiteBox: {
     backgroundColor: 'white',
     padding: 20,
-    borderRadius: 10,
-    marginBottom: 20,
-    marginTop: 100,
-    borderColor:'#7EA3A7',
-    borderWidth: 4,
+    borderRadius: 15,
+    borderColor: '#7EA3A7',
+    borderWidth: 5,
+    marginTop: 'auto',
+    marginBottom: 'auto',
   },
   DescriptionText: {
     fontSize: 25,
@@ -101,20 +108,27 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 10,
     marginTop: 20,
+    marginRight: 'auto',
+    marginLeft: 'auto',
+    textAlign: 'center',
   },
   PointText: {
     fontSize: 25,
     fontWeight: 'bold',
     marginBottom: 10,
-    marginTop: 10,
+    marginTop: 18,
     alignContent: 'center',
     color: 'grey',
+    marginRight: 'auto',
+    marginLeft: 'auto',
   },
   okButtonContainer: {
     backgroundColor: '#67B389',
     borderRadius: 20,
-    marginLeft: 100,
-    marginTop:30,
-    width: 100,
+    marginTop: 30,
+    marginBottom: 20,
+    width: 150,
+    marginRight: 'auto',
+    marginLeft: 'auto',
   },
 });

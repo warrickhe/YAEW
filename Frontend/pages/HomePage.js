@@ -57,8 +57,7 @@ export default function HomePage({ navigation }) {
     >
       <View style={styles.container}>
         <View style={styles.main_buttonContainer}>
-          <Text style={styles.TitleText}>WELCOME BACK</Text>
-          <Text style={styles.TitleText}>{username}!</Text>
+          <Text style={styles.TitleText}>Welcome back {username} : &#41;</Text>
           <View style={styles.stats_container}>
             <View style={styles.stats_box}>
               <Text style={styles.stats_Text}>Total Points</Text>
@@ -132,7 +131,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#d3d3d3',
     width: '95%',
-    height: '30%',
+    height: '23%',
     borderRadius: 10,
     borderTopWidth: 5,
     borderTopColor: '#557E82',
