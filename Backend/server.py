@@ -52,7 +52,7 @@ def get_animal(imagefile):
 
 def get_rarity(species):
   prompt = "On a scale of 1 to 10 how rare would it be to encounter an {species}? Answer with a single number."
-  res = model.generate_content(prompt).text
+  res = model.generate_content(prompt).text.replace("\n"," ").split(" ")[0]
   return int(res) if res.isnumeric() else 5
 
 @app.route('/capture', methods=['POST'])
@@ -66,8 +66,10 @@ def capture_image():
   with open(f"./images/{image_id}.png","wb") as my_file:
     my_file.write(imagefile)
   #requests.post("https://56d7-146-152-233-36.ngrok-free.app/classify",files=files)
-  description = short_description(animal)
   print(animal)
+  if '-' in animal:
+    animal = animal.split('-')[-1][1:]
+  description = short_description(animal)
   count = len(list(db['captures'].find({"deviceID":deviceID,"animal":animal})))
   #put image into database
   new_point_bonus = 0 if count>0 else 5
