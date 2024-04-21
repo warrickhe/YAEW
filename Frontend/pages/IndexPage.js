@@ -83,6 +83,7 @@ export default function IndexPage({ navigation }) {
                     renderItem={renderItem}
                     keyExtractor={(item, index) => index.toString()}
                 />
+                //TODO: Add Home Button.
             </View>
         </>
     );
