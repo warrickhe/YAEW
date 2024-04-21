@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Text, Button, Image, View, StyleSheet } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 
-const BACKEND_URL = 'http://192.168.189.182:7272';
+const BACKEND_URL = 'http://10.226.3.49:7272';
 
 export default function HomePage({ navigation }) {
   const [deviceID, setDeviceID] = useState('');
@@ -17,26 +17,67 @@ export default function HomePage({ navigation }) {
       setDeviceID(fetchUUID);
     };
 
+    fetchDeviceID();
+  }, []);
+
+  useEffect(() => {
+    if (!deviceID) return; // Return early if deviceID is not set
+
     const fetchProfile = async () => {
-      console.log('fetching');
+      console.log('fetching profile');
+      console.log(`${BACKEND_URL}/profile?device_id=${deviceID}`);
       try {
-        const response = await fetch(`${BACKEND_URL}/profile?device_id${deviceID}`, {
+        const response = await fetch(`${BACKEND_URL}/profile?device_id=${deviceID}`, {
           method: 'GET',
         });
 
-        const resData = await response.json();
-        setUsername(resData.username);
-        setPoints(resData.points);
-        setTotalCaptures(resData.total_captures);
-        setUniqueSpecies(resData.unique_species);
+        if (response.ok) {
+          console.log('response: ' + response);
+          const resData = await response.json();
+          setUsername(resData.username);
+          setPoints(resData.points);
+          setTotalCaptures(resData.total_captures);
+          setUniqueSpecies(resData.unique_species);
+        }
       } catch (error) {
         console.error('Error:', error.message);
       }
     };
 
-    fetchDeviceID();
     fetchProfile();
-  }, []);
+  }, [deviceID]);
+
+  // useEffect(() => {
+  //   // const fetchDeviceID = async () => {
+  //   //   let fetchUUID = await SecureStore.getItemAsync('secure_deviceid');
+  //   //   setDeviceID(fetchUUID);
+  //   //   console.log('this deviceID: ' + deviceID);
+  //   // };
+
+  //   const fetchProfile = async () => {
+  //     let fetchUUID = SecureStore.getItemAsync('secure_deviceid');
+  //     setDeviceID(fetchUUID);
+  //     console.log('uuid: ' + deviceID);
+
+  //     console.log('fetching profile data');
+  //     try {
+  //       const response = await fetch(`${BACKEND_URL}/profile?device_id=${deviceID}`, {
+  //         method: 'GET',
+  //       });
+
+  //       const resData = await response.json();
+  //       setUsername(resData.username);
+  //       setPoints(resData.points);
+  //       setTotalCaptures(resData.total_captures);
+  //       setUniqueSpecies(resData.unique_species);
+  //     } catch (error) {
+  //       console.error('Error:', error.message);
+  //     }
+  //   };
+
+  //   // fetchDeviceID();
+  //   fetchProfile();
+  // }, []);
 
   return (
     <>

@@ -4,6 +4,8 @@ import datetime
 from flask import Flask, request, jsonify, Response
 from flask_cors import CORS
 
+from microsoft_classification.classify_images import classify_img
+
 app = Flask(__name__)
 CORS(app)
 
@@ -15,8 +17,8 @@ def hello():
 
 def classify_image():
   #image will be in path
-  image_path = "./local.png"
-  return "chicken!"
+  result = classify_img()
+  return result
 
 @app.route('/classify', methods=['POST'])
 def handle_query():

@@ -27,7 +27,6 @@ def hello():
 @app.route('/getid', methods=['GET'])
 def get_id():
   deviceID = request.args.get("device_id")
-  print(deviceID)
   res = db['users'].find_one({"deviceID":deviceID})
   if res:
     return jsonify({'username':res['username']})
@@ -61,7 +60,7 @@ def capture_image():
     my_file.write(imagefile)
   files={'file': ('file', imagefile)}
   #requests.post("https://56d7-146-152-233-36.ngrok-free.app/classify",files=files)
-  requests.post("http://localhost:9272/classify",files=files)
+  requests.post("https://8681-146-152-233-36.ngrok-free.app/classify",files=files)
   description = short_description(animal)
   #put image into database
   return dumps({
@@ -89,11 +88,13 @@ def get_collection():
 @app.route('/profile', methods=['GET'])
 def get_profile():
   deviceID = request.args.get("device_id")
+  print(deviceID)
   res = db['captures'].find({"deviceID":deviceID})
   total_captures = len(list(res))
   res = res.distinct("animal")
   unique_species = len(list(res))
-  user = db['users'].find_one({"device_id":deviceID})
+  #possible error with CURSOR above
+  user = db['users'].find_one({"deviceID":deviceID})
   points = user['points']
   username = user['username']
   return dumps({"username":username,"total_captures":total_captures,"unique_species":unique_species,"points":points})

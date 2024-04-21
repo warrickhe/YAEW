@@ -16,12 +16,11 @@ import LandingPage from './pages/LandingPage';
 import InfoPage from './pages/InfoPage';
 import DetailInfo from './pages/DetailInfo';
 
-
 const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="HomePage">
+      <Stack.Navigator initialRouteName="LandingPage">
         <Stack.Screen name="LandingPage" component={LandingPage} />
         <Stack.Screen name="CreateUserPage" component={CreateUserPage} />
         <Stack.Screen name="HomePage" component={HomePage} />
