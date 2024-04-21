@@ -79,11 +79,13 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginBottom: 20,
     marginTop: 100,
+    borderColor:'#7EA3A7',
+    borderWidth: 4,
   },
   DescriptionText: {
     fontSize: 25,
     marginBottom: 30,
-    marginTop: 30,
+    marginTop: 20,
   },
   TitleText: {
     fontSize: 25,
@@ -95,7 +97,7 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: 'bold',
     marginBottom: 10,
-    marginTop: 20,
+    marginTop: 10,
     alignContent: 'center',
     color: 'grey',
   },
@@ -103,6 +105,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#67B389',
     borderRadius: 20,
     marginLeft: 100,
+    marginTop:30,
     width: 100,
   },
 });
