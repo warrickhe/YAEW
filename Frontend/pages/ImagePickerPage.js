@@ -3,11 +3,7 @@ import { Text, Button, Image, View, StyleSheet } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import * as SecureStore from 'expo-secure-store';
 
-// import { format } from 'date-fns';
-
-//192.168.189.182
-
-const BACKEND_URL = 'http://10.226.3.49:7272';
+const BACKEND_URL = 'http://192.168.1.100:7272';
 
 export default function ImagePickerExample() {
   const [deviceID, setDeviceID] = useState('');
@@ -21,18 +17,6 @@ export default function ImagePickerExample() {
 
     fetchDeviceID();
   }, []);
-
-  // function getCurrentDateAndTime() {
-  //   const now = new Date();
-
-  //   const formattedDate = format(now, 'yyyy-MM-dd'); // Output: 2024-04-20
-  //   const formattedTime = format(now, 'HH:mm');
-
-  //   console.log(formattedDate);
-  //   console.log(formattedTime);
-
-  //   // return { date: formattedDate, time: formattedTime };
-  // }
 
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
@@ -59,8 +43,8 @@ export default function ImagePickerExample() {
     const formattedData = new FormData();
     formattedData.append('file', {
       uri: image,
-      name: 'uploaded_image.jpg', // You can give it a name
-      type: 'image/jpeg', // Ensure correct MIME type
+      name: 'uploaded_image.jpg',
+      type: 'image/jpeg',
     });
 
     console.log('here is the image data');
@@ -70,7 +54,7 @@ export default function ImagePickerExample() {
       const response = await fetch(`${BACKEND_URL}/capture?device_id=${deviceID}`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'multipart/form-data', // Key header for file uploads
+          'Content-Type': 'multipart/form-data',
         },
         body: formattedData,
       });
@@ -87,12 +71,7 @@ export default function ImagePickerExample() {
 
   return (
     <>
-      {/* <View style={styles.container}>
-        <Button title="Pick an image from camera roll" onPress={pickImage} />
-        {image && <Image source={{ uri: image }} style={styles.image} />}
-      </View> */}
       <View>
-        {/* <Button title="test date" onPress={getCurrentDateAndTime}></Button> */}
         <Button title="Pick an Image" onPress={pickImage} />
         {image && (
           <>

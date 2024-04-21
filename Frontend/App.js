@@ -35,21 +35,6 @@ export default function App() {
   );
 }
 
-// WARRICK's IMAGE PICKER CODE (WORKS)
-//
-// export default function App() {
-//   return (
-//     <View style={styles.container}>
-//       <Text>efedfe</Text>
-//       <View style={styles.camera}>
-//         <CapturePage style={styles.camera} />
-//       </View>
-//       <ImagePickerExample />
-//       <StatusBar style="auto" />
-//     </View>
-//   );
-// }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
