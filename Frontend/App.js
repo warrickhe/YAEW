@@ -22,7 +22,12 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="LandingPage">
+      <Stack.Navigator
+        initialRouteName="LandingPage"
+        screenOptions={{
+          headerShown: false,
+        }}
+      >
         <Stack.Screen name="LandingPage" component={LandingPage} />
         <Stack.Screen name="CreateUserPage" component={CreateUserPage} />
         <Stack.Screen name="HomePage" component={HomePage} />
@@ -39,21 +44,6 @@ export default function App() {
     </NavigationContainer>
   );
 }
-
-// WARRICK's IMAGE PICKER CODE (WORKS)
-//
-// export default function App() {
-//   return (
-//     <View style={styles.container}>
-//       <Text>efedfe</Text>
-//       <View style={styles.camera}>
-//         <CapturePage style={styles.camera} />
-//       </View>
-//       <ImagePickerExample />
-//       <StatusBar style="auto" />
-//     </View>
-//   );
-// }
 
 const styles = StyleSheet.create({
   container: {

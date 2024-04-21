@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
-
+import { LinearGradient } from 'expo-linear-gradient';
 const data = {
   name: 'cat',
   date: 'Apr 19th',
@@ -31,6 +31,7 @@ const DetailInfo = ({ navigator, route }) => {
   const { imageData, speciesName } = route.params;
 
   return (
+    <LinearGradient style={styles.landingPage} locations={[0.29, 1]} colors={['#ebf9c9', '#96e6a1']} useAngle={true} angle={168.15}>
     <View style={styles.container}>
       {/* Main White Box */}
 
@@ -47,13 +48,21 @@ const DetailInfo = ({ navigator, route }) => {
         </TouchableOpacity>
       </View>
     </View>
+    </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
+    landingPage: {
+        flex: 1,
+        width: "100%",
+        height: 852,
+        backgroundColor: "transparent",
+        overflow: "hidden"
+        },
   container: {
     flex: 1,
-    backgroundColor: '#CDEBC5',
+    //backgroundColor: '#CDEBC5',
     padding: 10,
   },
   whiteBox: {

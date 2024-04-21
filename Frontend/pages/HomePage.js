@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Text, Button, Image, View, StyleSheet } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const BACKEND_URL = 'http://192.168.1.100:7272';
 
@@ -47,7 +48,13 @@ export default function HomePage({ navigation }) {
   }, [deviceID]);
 
   return (
-    <>
+    <LinearGradient
+      style={styles.container}
+      locations={[0.29, 1]}
+      colors={['#ebf9c9', '#96e6a1']}
+      useAngle={true}
+      angle={168.15}
+    >
       <View style={styles.container}>
         <View style={styles.main_buttonContainer}>
           <Text style={styles.TitleText}>WELCOME BACK</Text>
@@ -89,7 +96,7 @@ export default function HomePage({ navigation }) {
           </View>
         </View>
       </View>
-    </>
+    </LinearGradient>
   );
 }
 
@@ -100,9 +107,9 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: '#CDEBC5',
     alignItems: 'center',
     width: '100%',
+    height: '30%',
   },
   main_buttonContainer: {
     backgroundColor: 'white',
@@ -113,6 +120,15 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#d3d3d3',
     width: '90%',
+    height: '30%',
+    borderRadius: 10,
+    borderTopWidth: 5,
+    borderTopColor: '#557E82',
+    backgroundColor: '#F7FAF9',
+    shadowOffset: { width: 4, height: 4 },
+    shadowColor: 'black',
+    shadowOpacity: 0.15,
+    shadowRadius: 4,
   },
   buttonContainer: {
     backgroundColor: 'white',
@@ -129,9 +145,12 @@ const styles = StyleSheet.create({
     width: '90%',
     marginBottom: 10,
   },
+  stats_top_text: {
+    fontSize: 10,
+  },
   stats_Text: {
     padding: 5,
-    color: '#6D9195',
+    color: '#44686C',
   },
   stats_Number: {
     padding: 5,
@@ -146,6 +165,14 @@ const styles = StyleSheet.create({
     marginRight: 10,
     backgroundColor: '#E1EDF4',
     borderRadius: 10,
+    shadowColor: 'rgba(0, 0, 0, 0.10)',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 4,
+    elevation: 4,
   },
   camera: {
     height: '50%',
