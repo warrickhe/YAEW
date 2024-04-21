@@ -1,3 +1,3 @@
-from .classify_images import classify_imgs
+from .classify_images import classify_img
 
-__all__ = ['classify_imgs']
+__all__ = ['classify_img']
