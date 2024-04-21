@@ -5,7 +5,7 @@ import 'react-native-get-random-values';
 import { LinearGradient } from 'expo-linear-gradient';
 import { TouchableOpacity } from 'react-native';
 import { v4 as uuidv4 } from 'uuid';
-
+import Logo from './logo.png';
 const BACKEND_URL = 'http://192.168.1.100:7272';
 
 //80282bd4-81f7-46d7-9f43-a9fb268289cb
@@ -65,19 +65,18 @@ export default function LandingPage({ navigation }) {
   };
 
   return (
-    <LinearGradient style={styles.landingPage} locations={[0.29,1]} colors={['#ebf9c9','#96e6a1']} useAngle={true} angle={168.15}>
-  <View style={styles.logoContainer}>
-          <View>
-          <Text style={styles.logo}>FloraFauna</Text>
+    <LinearGradient style={styles.landingPage} locations={[0.29, 1]} colors={['#ebf9c9', '#96e6a1']} useAngle={true} angle={168.15}>
+        <View style={styles.logoContainer}>
+            <Image source={Logo} style={styles.logoImage} />
             <Text style={styles.welcome}>WELCOME!</Text>
-  
-          </View>
-          <Text style ={styles.subtitle}>Discover the nature around you.</Text>
+            <Text style={styles.subtitle}>Discover the nature around you.</Text>
         </View>
-              <TouchableOpacity onPress={checkIfUserExists} style={styles.getStartedButton}>
-          <Text style={styles.getStartedText}>GET STARTED</Text>
+        <TouchableOpacity onPress={checkIfUserExists} style={styles.getStartedButton}>
+            <Text style={styles.getStartedText}>GET STARTED</Text>
         </TouchableOpacity>
-  </LinearGradient>);
+    </LinearGradient>
+);
+
       };
 
 
@@ -92,6 +91,12 @@ const styles = StyleSheet.create({
   logoContainer: {
     marginTop:200,
   },
+  logoImage: {
+    width: 200, // adjust width as needed
+    height: 100, // adjust height as needed
+    marginBottom: 10,
+    alignSelf: 'center',
+},
   logo: {
     lineHeight: 32,
       letterSpacing: -0.6,
@@ -107,7 +112,7 @@ const styles = StyleSheet.create({
       color: "#000",
       fontFamily: "Roboto-Bold",
       marginBottom: 30,
-      marginTop: 50,
+      marginTop: 30,
       fontWeight: "800",
       marginLeft:100,
   },

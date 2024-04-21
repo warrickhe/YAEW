@@ -71,11 +71,10 @@ export default function InfoPage({ navigation, route }) {
         <View style={styles.front}>
           {/* Main Image */}
           <Image
-            // TODO: CHANGE IMAGE URL
-            source={require('../images/index-placeholder-image.jpg')}
-            style={styles.mainImage}
-            resizeMode="cover"
-          />
+    source={require('../images/index-placeholder-image.jpg')}
+    style={[styles.mainImage, { width: '80%', height: 150, resizeMode: 'contain' }]}
+    resizeMode="contain"
+/>
           <View style={styles.box}>
             <Text style={styles.bubbleText}>Found: {numFound}</Text>
           </View>
