@@ -1,23 +1,69 @@
-import React from 'react';
-import { View, Text, Image, ScrollView, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, Image, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import * as SecureStore from 'expo-secure-store';
+import base64 from 'base-64';
 import FlipCard from 'react-native-flip-card';
 
-const data = {
-  num_found: 10,
-  description: "This is a sample description of the main image.",
-  where_to_find: "supplemental details",
-  user_images: [
-    { id: 1, url: "https://static.boredpanda.com/blog/wp-content/uploads/2018/04/5acb63d83493f__700-png.jpg", description: "An image of a cat" },
-    { id: 2, url: "https://static.boredpanda.com/blog/wp-content/uploads/2018/04/5acb63d83493f__700-png.jpg", description: "An image of a dog" },
-    { id: 3, url: "https://static.boredpanda.com/blog/wp-content/uploads/2018/04/5acb63d83493f__700-png.jpg", description: "An image of a bird" },
-  ]
-};
+const BACKEND_URL = 'http://192.168.1.100:7272';
 
-const ItemSeparatorComponent = () => (
-    <View style={styles.separator} />
-);
+const ItemSeparatorComponent = () => <View style={styles.separator} />;
 
-export default function InfoPage({ navigation }) {
+export default function InfoPage({ navigation, route }) {
+  const [deviceID, setDeviceID] = useState('');
+  const [speciesName, setSpeciesName] = useState(route.params.data);
+  const [numFound, setNumFound] = useState(0);
+  const [description, setDescription] = useState('');
+  const [images, setImages] = useState([]);
+
+  useEffect(() => {
+    const fetchDeviceID = async () => {
+      let fetchUUID = await SecureStore.getItemAsync('secure_deviceid');
+      setDeviceID(fetchUUID);
+    };
+
+    fetchDeviceID();
+  }, []);
+
+  useEffect(() => {
+    if (!deviceID) return; // Return early if deviceID is not set
+
+    const fetchIndexData = async () => {
+      console.log('fetching specific species data');
+      try {
+        const response = await fetch(
+          `${BACKEND_URL}/info/long?device_id=${deviceID}&species=${speciesName}`,
+          {
+            method: 'GET',
+          }
+        );
+
+        if (response.ok) {
+          const resData = await response.json();
+          console.log(resData);
+          setNumFound(resData.num_found);
+          setDescription(resData.description);
+          setImages(resData.user_images);
+        }
+      } catch (error) {
+        console.error('Error:', error.message);
+      }
+    };
+
+    fetchIndexData();
+  }, [deviceID]);
+
+  // Check if `item.image` has binary data and convert to base64
+  function convertBinary(image) {
+    if (image && image.$binary && image.$binary.base64) {
+      return `data:image/png;base64,${image.$binary.base64}`;
+    }
+  }
+
+  const handleImageClick = (image) => {
+    // Navigate to screen "a" and pass the clicked image data as a parameter
+    navigation.navigate('DetailInfo', { imageData: image, speciesName });
+  };
+
   return (
     <View style={styles.container}>
       <FlipCard style={styles.whiteBox}>
@@ -25,41 +71,57 @@ export default function InfoPage({ navigation }) {
         <View style={styles.front}>
           {/* Main Image */}
           <Image
-            source={{ uri: "https://static.boredpanda.com/blog/wp-content/uploads/2018/04/5acb63d83493f__700-png.jpg" }}
+            // TODO: CHANGE IMAGE URL
+            source={require('../images/index-placeholder-image.jpg')}
             style={styles.mainImage}
             resizeMode="cover"
           />
           <View style={styles.box}>
-            <Text style={styles.bubbleText}>
-              Found: {data.num_found}
-            </Text>
+            <Text style={styles.bubbleText}>Found: {numFound}</Text>
           </View>
           {/* Description */}
-          <Text style={styles.description}>
-            {data.description}
-          </Text>
+          <Text style={styles.description}>{description}</Text>
           <View style={styles.separator} />
           <Text>Photos</Text>
           {/* User Images Row */}
+          {/* ScrollView isn't showing up, i think i broke something in your css idk */}
           <ScrollView horizontal style={styles.userImagesRow}>
-            {data.user_images.map((image) => (
-              <View key={image.id} style={styles.userImageContainer}>
+            {images.map((image, index) => (
+              <TouchableOpacity
+                key={`${speciesName}-${index}`}
+                style={styles.userImageContainer}
+                onPress={() => handleImageClick(convertBinary(image))}
+              >
                 {/* User Image */}
                 <Image
-                  source={{ uri: image.url }}
+                  source={{ uri: convertBinary(image) }}
                   style={styles.userImage}
                   resizeMode="cover"
                 />
-              </View>
+              </TouchableOpacity>
             ))}
           </ScrollView>
+          {/* if i change ScrollView --> View it works */}
+          <View>
+            {images.map((image, index) => (
+              <TouchableOpacity
+                key={`${speciesName}-${index}`}
+                style={styles.userImageContainer}
+                onPress={() => handleImageClick(convertBinary(image))}
+              >
+                {/* User Image */}
+                <Image
+                  source={{ uri: convertBinary(image) }}
+                  style={styles.userImage}
+                  resizeMode="cover"
+                />
+              </TouchableOpacity>
+            ))}
+          </View>
         </View>
-        
         {/* Back Side */}
         <View style={styles.back}>
-          <Text style={styles.backText}>
-            {data.where_to_find}
-          </Text>
+          <Text style={styles.backText}>'where to find'</Text>
         </View>
       </FlipCard>
     </View>
@@ -85,7 +147,7 @@ const styles = StyleSheet.create({
     padding: 5,
     borderRadius: 20,
     marginTop: 150,
-    marginBottom:150,
+    marginBottom: 150,
     alignItems: 'center',
     borderWidth: 5, // Add border width
     borderColor: '#7EA3A7',
@@ -103,7 +165,7 @@ const styles = StyleSheet.create({
   },
   backText: {
     color: 'black',
-    fontSize:30,
+    fontSize: 30,
   },
   mainImage: {
     width: '80%',

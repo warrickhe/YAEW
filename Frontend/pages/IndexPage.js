@@ -1,55 +1,59 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Image, FlatList, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import * as SecureStore from 'expo-secure-store';
 
-const Data = {
-  username: 'warrick',
-  total_captures: 2,
-  unique_species: 2,
-  points: 10,
-};
-
-const data1 = [
-  {
-    image_url:
-      'https://static.boredpanda.com/blog/wp-content/uploads/2018/04/5acb63d83493f__700-png.jpg',
-  },
-  {
-    image_url:
-      'https://static.boredpanda.com/blog/wp-content/uploads/2018/04/5acb63d83493f__700-png.jpg',
-  },
-  {
-    image_url:
-      'https://static.boredpanda.com/blog/wp-content/uploads/2018/04/5acb63d83493f__700-png.jpg',
-  },
-  {
-    image_url:
-      'https://static.boredpanda.com/blog/wp-content/uploads/2018/04/5acb63d83493f__700-png.jpg',
-  },
-  {
-    image_url:
-      'https://static.boredpanda.com/blog/wp-content/uploads/2018/04/5acb63d83493f__700-png.jpg',
-  },
-  {
-    image_url:
-      'https://static.boredpanda.com/blog/wp-content/uploads/2018/04/5acb63d83493f__700-png.jpg',
-  },
-  // Add more items as needed
-];
+const BACKEND_URL = 'http://192.168.1.100:7272';
 
 export default function IndexPage({ navigation }) {
+  const [deviceID, setDeviceID] = useState('');
+  const [indexData, setIndexData] = useState([]);
+
+  useEffect(() => {
+    const fetchDeviceID = async () => {
+      let fetchUUID = await SecureStore.getItemAsync('secure_deviceid');
+      setDeviceID(fetchUUID);
+    };
+
+    fetchDeviceID();
+  }, []);
+
+  useEffect(() => {
+    if (!deviceID) return; // Return early if deviceID is not set
+
+    const fetchIndexData = async () => {
+      console.log('fetching index data');
+      try {
+        const response = await fetch(`${BACKEND_URL}/collection?device_id=${deviceID}`, {
+          method: 'GET',
+        });
+
+        if (response.ok) {
+          const resData = await response.json();
+          setIndexData(resData.animals);
+        }
+      } catch (error) {
+        console.error('Error:', error.message);
+      }
+    };
+
+    fetchIndexData();
+  }, [deviceID]);
+
   // Function to handle navigation when an image is clicked
-  const handleImageClick = (image) => {
+  const handleImageClick = (speciesName) => {
     // Navigate to screen "a" and pass the clicked image data as a parameter
-    navigation.navigate('HomePage', { data: image });
+    navigation.navigate('InfoPage', { data: speciesName });
   };
 
   // Function to render each row of three images
   const renderItem = ({ item }) => {
     return (
       <View style={styles.row}>
-        {item.map((image, index) => (
-          <TouchableOpacity key={index} onPress={() => handleImageClick(image)}>
-            <Image source={{ uri: image.image_url }} style={styles.image} />
+        {item.map((speciesName, index) => (
+          <TouchableOpacity key={index} onPress={() => handleImageClick(speciesName)}>
+            {/* TODO: CHANGE IMAGE URL */}
+            <Image source={require('../images/index-placeholder-image.jpg')} style={styles.image} />
+            <Text style={styles.image}>{speciesName}</Text>
           </TouchableOpacity>
         ))}
       </View>
@@ -58,15 +62,16 @@ export default function IndexPage({ navigation }) {
 
   // Group data into rows of three
   const groupedData = [];
-  for (let i = 0; i < data1.length; i += 3) {
-    groupedData.push(data1.slice(i, i + 3));
+  let dataCopy = indexData;
+  for (let i = 0; i < dataCopy.length; i += 3) {
+    groupedData.push(dataCopy.slice(i, i + 3));
   }
 
   return (
     <>
       <View style={styles.centeredContainer}>
         <Text style={styles.titleText}>Index</Text>
-        <Text style={styles.subtitleText}>Total Species: {Data.unique_species}</Text>
+        <Text style={styles.subtitleText}>Total Species Collected: {indexData.length}</Text>
       </View>
       <View style={styles.container}>
         <FlatList
@@ -74,11 +79,12 @@ export default function IndexPage({ navigation }) {
           renderItem={renderItem}
           keyExtractor={(item, index) => index.toString()}
         />
-        //TODO: Add Home Button.
       </View>
     </>
   );
 }
+
+//TODO: Add Home Button.
 
 const styles = StyleSheet.create({
   centeredContainer: {
