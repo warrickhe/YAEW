@@ -32,7 +32,6 @@ export default function LandingPage({ navigation }) {
 
   const checkIfUserExists = async () => {
     console.log('checking if user exists');
-    console.log(uuid);
 
     if (!uuid) {
       console.error('UUID is not initialized');
@@ -46,13 +45,13 @@ export default function LandingPage({ navigation }) {
 
       if (response.status === 204) {
         // throw new Error('No ID found');
-        console.log('no username, redirecting!');
+        console.log('no username, redirecting to CREATE USER PAGE');
         navigation.navigate('CreateUserPage');
         return;
       }
 
       if (response.status === 200) {
-        console.log('User exists');
+        console.log('User exists, redirecting to HOME PAGE');
         const resData = await response.json();
         await SecureStore.setItemAsync('username', resData.username);
         navigation.navigate('HomePage');
