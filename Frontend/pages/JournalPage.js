@@ -71,10 +71,11 @@ export default function JournalPage({ navigation }) {
     <>
       <View style={styles.centeredContainer}>
         <Text style={styles.titleText}>Journal</Text>
-        <Text style={styles.subtitleText}>This is what you've been up to</Text>
+        <Text style={styles.subtitleText}>This is what you've been up to (^_^)</Text>
       </View>
-
+      <View style={styles.separator} />
       <View style={styles.container}>
+        
         <FlatList
           data={journalData}
           renderItem={renderItem}
@@ -104,7 +105,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 80,
-    marginBottom: -50,
+    marginBottom: -70,
     backgroundColor: '#CDEBC5',
     width: '100%',
   },
@@ -115,7 +116,7 @@ const styles = StyleSheet.create({
   },
   subtitleText: {
     fontSize: 16,
-    color: 'green',
+    color: '#222222',
   },
   itemContainer: {
     flexDirection: 'row',
