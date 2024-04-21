@@ -44,6 +44,7 @@ export default function QuizPage(navigation) {
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(null);
   const [isNextButtonVisible, setIsNextButtonVisible] = useState(false);
   const [isCorrectAnswerSelected, setIsCorrectAnswerSelected] = useState(null);
+  const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchDeviceID = async () => {
@@ -68,6 +69,7 @@ export default function QuizPage(navigation) {
           const resData = await response.json();
           setQuizData(resData);
           console.log(resData);
+          setLoading(false);
         }
       } catch (error) {
         console.error('Error:', error.message);
@@ -79,7 +81,7 @@ export default function QuizPage(navigation) {
 
   // Handle button press
   const handlePress = (optionIndex) => {
-    const isCorrect = quizDataOLD[currentQuestionIndex].options[optionIndex].correct;
+    const isCorrect = quizData[currentQuestionIndex].options[optionIndex].correct;
     setSelectedOptionIndex(optionIndex);
     setIsCorrectAnswerSelected(isCorrect);
     setIsNextButtonVisible(isCorrect);
@@ -88,14 +90,21 @@ export default function QuizPage(navigation) {
   // Handle next button press
   const handleNextPress = () => {
     // Randomly select a new question index
-    const randomIndex = Math.floor(Math.random() * quizDataOLD.length);
-    setCurrentQuestionIndex(randomIndex);
+    setCurrentQuestionIndex((currentQuestionIndex+1)%quizData.length);
     // Reset the state for the next question
     setSelectedOptionIndex(null);
     setIsCorrectAnswerSelected(null);
     setIsNextButtonVisible(false);
   };
-
+  if (isLoading) {
+    return (<View>
+      <Text>
+      Loading...
+        </Text>
+    </View>);
+    
+  }
+  const currentQuestion = quizData[currentQuestionIndex];
   return (
     <View style={styles.container}>
       {/* White box containing the quiz question */}
