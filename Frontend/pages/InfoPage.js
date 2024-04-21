@@ -66,64 +66,53 @@ export default function InfoPage({ navigation, route }) {
 
   return (
     <View style={styles.container}>
-      <FlipCard style={styles.whiteBox}>
+    <FlipCard style={styles.whiteBox}>
         {/* Front Side */}
         <View style={styles.front}>
-          {/* Main Image */}
-          <Image
-    source={require('../images/index-placeholder-image.jpg')}
-    style={[styles.mainImage, { width: '80%', height: 150, resizeMode: 'contain' }]}
-    resizeMode="contain"
-/>
-          <View style={styles.box}>
-            <Text style={styles.bubbleText}>Found: {numFound}</Text>
-          </View>
-          {/* Description */}
-          <Text style={styles.description}>{description}</Text>
-          <View style={styles.separator} />
-          <Text>Photos</Text>
-          {/* User Images Row */}
-          {/* ScrollView isn't showing up, i think i broke something in your css idk */}
-          <ScrollView horizontal style={styles.userImagesRow}>
-            {images.map((image, index) => (
-              <TouchableOpacity
-                key={`${speciesName}-${index}`}
-                style={styles.userImageContainer}
-                onPress={() => handleImageClick(convertBinary(image))}
-              >
-                {/* User Image */}
-                <Image
-                  source={{ uri: convertBinary(image) }}
-                  style={styles.userImage}
-                  resizeMode="cover"
-                />
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
-          {/* if i change ScrollView --> View it works */}
-          <View>
-            {images.map((image, index) => (
-              <TouchableOpacity
-                key={`${speciesName}-${index}`}
-                style={styles.userImageContainer}
-                onPress={() => handleImageClick(convertBinary(image))}
-              >
-                {/* User Image */}
-                <Image
-                  source={{ uri: convertBinary(image) }}
-                  style={styles.userImage}
-                  resizeMode="cover"
-                />
-              </TouchableOpacity>
-            ))}
-          </View>
+            {/* Main Image */}
+            <Image
+                source={require('../images/index-placeholder-image.jpg')}
+                style={[styles.mainImage, { width: '150%', height: 150, resizeMode: 'cover' }]}
+                resizeMode="contain"
+            />
+            <View>
+                <Text style={styles.NameText}>{speciesName}</Text>
+            </View>
+            <View style={styles.box}>
+                <Text style={styles.bubbleText}>Found: {numFound}</Text>
+            </View>
+
+            {/* Description */}
+            <View style={styles.separator} />
+            <Text>Photos</Text>
+
+            {/* User Images Row */}
+            {/* Use ScrollView with horizontal prop set to true */}
+            <ScrollView horizontal style={styles.userImagesRow}>
+                {images.map((image, index) => (
+                    <TouchableOpacity
+                        key={`${speciesName}-${index}`}
+                        style={styles.userImageContainer}
+                        onPress={() => handleImageClick(convertBinary(image))}
+                    >
+                        {/* User Image */}
+                        <Image
+                            source={{ uri: convertBinary(image) }}
+                            style={styles.userImage}
+                            resizeMode="cover"
+                        />
+                    </TouchableOpacity>
+                ))}
+            </ScrollView>
         </View>
+
         {/* Back Side */}
         <View style={styles.back}>
-          <Text style={styles.backText}>'where to find'</Text>
+            <Text style={styles.backText}>{description}</Text>
         </View>
-      </FlipCard>
-    </View>
+    </FlipCard>
+</View>
+
   );
 }
 
@@ -140,6 +129,11 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 10,
   },
+  NameText:{
+    fontSize:20,
+    padding:5,
+    
+  },
   whiteBox: {
     flex: 1,
     backgroundColor: 'white',
@@ -147,10 +141,13 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     marginTop: 150,
     marginBottom: 150,
-    alignItems: 'center',
     borderWidth: 5, // Add border width
     borderColor: '#7EA3A7',
-  },
+    alignItems: 'center',
+    justifyContent: 'center',
+    // Remove fixed height or set it to 'auto' to allow the card to adjust
+    height: 'auto',
+},
   front: {
     flex: 1,
     alignItems: 'center',
@@ -164,11 +161,11 @@ const styles = StyleSheet.create({
   },
   backText: {
     color: 'black',
-    fontSize: 30,
+    fontSize: 15,
   },
   mainImage: {
-    width: '80%',
-    height: 150,
+    width: '100%',
+    height: 200,
     borderRadius: 8,
     marginTop: 20,
   },
@@ -197,8 +194,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   userImage: {
-    width: 80,
-    height: 80,
+    width: 100, // Adjust the width as desired
+    height: 100, // Adjust the height as desired
     borderRadius: 8,
-  },
+},
 });
