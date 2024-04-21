@@ -50,6 +50,11 @@ def check_user():
 def get_animal(imagefile):
   return "chicken"
 
+def get_rarity(species):
+  prompt = "On a scale of 1 to 10 how rare would it be to encounter an {species}? Answer with a single number."
+  res = model.generate_content(prompt).text
+  return int(res) if res.isnumeric() else 5
+
 @app.route('/capture', methods=['POST'])
 def capture_image():
   deviceID = request.args.get("device_id","pixel7")
@@ -65,11 +70,16 @@ def capture_image():
     my_file.write(imagefile)
   #requests.post("https://56d7-146-152-233-36.ngrok-free.app/classify",files=files)
   description = short_description(animal)
+  count = len(list(db['captures'].find({"deviceID":deviceID,"animal":animal})))
   #put image into database
+  new_point_bonus = 0 if count>0 else 5
+  rarity = get_rarity(animal)
+  db['users'].find_one_and_update({"deviceID":deviceID},{'$inc':{'points':new_point_bonus+5+rarity}})
   return dumps({
     "animal": animal,
     "description": description,
-    "points": 5
+    "new_point_bonus": new_point_bonus,
+    "rarity_point_bonus": rarity
   })
 
 @app.route('/journal', methods=['GET'])
