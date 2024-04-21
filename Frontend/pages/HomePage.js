@@ -1,23 +1,59 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text, Button, Image, View, StyleSheet } from 'react-native';
+import * as SecureStore from 'expo-secure-store';
+
+const BACKEND_URL = 'http://192.168.189.182:7272';
 
 export default function HomePage({ navigation }) {
+  const [deviceID, setDeviceID] = useState('');
+  const [username, setUsername] = useState('');
+  const [points, setPoints] = useState(0);
+  const [totalCaptures, setTotalCaptures] = useState(0);
+  const [uniqueSpecies, setUniqueSpecies] = useState(0);
+
+  useEffect(() => {
+    const fetchDeviceID = async () => {
+      let fetchUUID = await SecureStore.getItemAsync('secure_deviceid');
+      setDeviceID(fetchUUID);
+    };
+
+    const fetchProfile = async () => {
+      console.log('fetching');
+      try {
+        const response = await fetch(`${BACKEND_URL}/profile?device_id${deviceID}`, {
+          method: 'GET',
+        });
+
+        const resData = await response.json();
+        setUsername(resData.username);
+        setPoints(resData.points);
+        setTotalCaptures(resData.total_captures);
+        setUniqueSpecies(resData.unique_species);
+      } catch (error) {
+        console.error('Error:', error.message);
+      }
+    };
+
+    fetchDeviceID();
+    fetchProfile();
+  }, []);
+
   return (
     <>
       <View>
-        <Text>WELCOME BACK USER123</Text>
+        <Text>WELCOME BACK {username}</Text>
         <View style={styles.stats_container}>
           <View style={styles.stats_box}>
             <Text>Total Points</Text>
-            <Text>130</Text>
+            <Text>{points}</Text>
           </View>
           <View style={styles.stats_box}>
             <Text>Discoveries</Text>
-            <Text>30</Text>
+            <Text>{totalCaptures}</Text>
           </View>
           <View style={styles.stats_box}>
             <Text>Species Found</Text>
-            <Text>10</Text>
+            <Text>{uniqueSpecies}</Text>
           </View>
         </View>
       </View>
