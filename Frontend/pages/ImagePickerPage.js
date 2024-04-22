@@ -1,12 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import {
   Text,
-  Button,
   Image,
   View,
   StyleSheet,
   ActivityIndicator,
   TouchableOpacity,
+  Animated,
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import * as SecureStore from 'expo-secure-store';
@@ -17,8 +17,10 @@ const BACKEND_URL = 'http://192.168.1.100:7272';
 export default function ImagePickerExample({ navigation }) {
   const [deviceID, setDeviceID] = useState('');
   const [image, setImage] = useState(null);
-
   const [sentToBackend, setSentToBackend] = useState(false);
+  const [imagePicked, setImagePicked] = useState(false);
+  const [showButton, setShowButton] = useState(true); // State to track button visibility
+  const buttonOpacity = useRef(new Animated.Value(1)).current; // Animated value for button opacity
 
   useEffect(() => {
     const fetchDeviceID = async () => {
@@ -30,7 +32,6 @@ export default function ImagePickerExample({ navigation }) {
   }, []);
 
   const pickImage = async () => {
-    // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
@@ -42,6 +43,7 @@ export default function ImagePickerExample({ navigation }) {
 
     if (!result.canceled) {
       setImage(result.assets[0].uri);
+      setImagePicked(true);
     }
   };
 
@@ -51,7 +53,15 @@ export default function ImagePickerExample({ navigation }) {
       return;
     }
 
-    setSentToBackend(true);
+    // Start fade-out animation
+    Animated.timing(buttonOpacity, {
+      toValue: 0,
+      duration: 500, // Duration of the fade-out animation in milliseconds
+      useNativeDriver: true,
+    }).start(() => {
+      setShowButton(false); // Hide the button after the animation completes
+      setSentToBackend(true); // Show loading indicator
+    });
 
     const formattedData = new FormData();
     formattedData.append('file', {
@@ -60,7 +70,7 @@ export default function ImagePickerExample({ navigation }) {
       type: 'image/jpeg',
     });
 
-    console.log('here is the image data');
+    console.log('Here is the image data:');
     console.log(formattedData);
 
     try {
@@ -75,14 +85,12 @@ export default function ImagePickerExample({ navigation }) {
       if (response.ok) {
         console.log('Image uploaded successfully!');
         const resData = await response.json();
-
-        //console.log(resData);
         navigation.navigate('DiscoveryPage', { data: resData });
       } else {
-        console.error('Error uploading image', response.statusText);
+        console.error('Error uploading image:', response.statusText);
       }
     } catch (error) {
-      console.error('Network error', error);
+      console.error('Network error:', error);
     }
   };
 
@@ -95,18 +103,27 @@ export default function ImagePickerExample({ navigation }) {
       angle={168.15}
     >
       <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={pickImage} style={styles.button}>
-          <Text style={styles.buttonText}>Pick an Image</Text>
-        </TouchableOpacity>
-        {image && (
-          <TouchableOpacity onPress={sendImageToBackend} style={styles.button}>
-            <Text style={styles.buttonText}>What did I find?</Text>
+        {/* Render the "Pick an Image" button if an image has not been picked */}
+        {!imagePicked && (
+          <TouchableOpacity onPress={pickImage} style={styles.button}>
+            <Text style={styles.buttonText}>Pick an Image</Text>
           </TouchableOpacity>
         )}
+
+        {/* Use Animated.View to apply fade-out effect */}
+        {imagePicked && showButton && (
+          <Animated.View style={{ opacity: buttonOpacity }}>
+            <TouchableOpacity onPress={sendImageToBackend} style={styles.centerButton}>
+              <Text style={styles.buttonText}>What did I find?</Text>
+            </TouchableOpacity>
+          </Animated.View>
+        )}
+
+        {/* Show loading indicator at the center if the image is being sent to the backend */}
         {sentToBackend && (
           <View style={styles.loadingContainer}>
             <Text style={styles.loadingTitleText}>Analyzing...</Text>
-            <ActivityIndicator size="large" />
+            <ActivityIndicator size="large" color="#3f84e5" />
           </View>
         )}
       </View>
@@ -124,21 +141,34 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
   },
+  // Style for the "Pick an Image" button
   button: {
+    width: '60%',
+    aspectRatio: 1, // Square aspect ratio
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff', // Light blue fill to slightly fade out the color
+    borderWidth: 4, // Blue outline
+    borderColor: 'rgba(126, 163, 167, 0.70)', // Blue outline color
+    borderRadius: 10, // Adjust border radius as needed
+    marginVertical: 10, // Adjust vertical margin as needed
+  },
+  // Style for the "What did I find?" button centered in the screen
+  centerButton: {
     width: '60%',
     aspectRatio: 1, // Square aspect ratio
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#fff', // White fill
     borderWidth: 4, // Blue outline
-    borderColor: '#44686C', // Blue outline color
+    borderColor: 'rgba(126, 163, 167, 0.70)', // Blue outline color
     borderRadius: 10, // Adjust border radius as needed
     marginVertical: 10, // Adjust vertical margin as needed
   },
   buttonText: {
     fontSize: 18,
     fontWeight: '700',
-    color: '#44686C', // Blue text color
+    color: '#2F5361', // Blue text color
   },
   loadingContainer: {
     alignItems: 'center',
@@ -147,7 +177,5 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 10,
-    marginTop: 10,
-    color: '#44686C',
   },
 });

@@ -90,19 +90,18 @@ export default function QuizPage(navigation) {
   // Handle next button press
   const handleNextPress = () => {
     // Randomly select a new question index
-    setCurrentQuestionIndex((currentQuestionIndex+1)%quizData.length);
+    setCurrentQuestionIndex((currentQuestionIndex + 1) % quizData.length);
     // Reset the state for the next question
     setSelectedOptionIndex(null);
     setIsCorrectAnswerSelected(null);
     setIsNextButtonVisible(false);
   };
   if (isLoading) {
-    return (<View>
-      <Text>
-      Loading...
-        </Text>
-    </View>);
-    
+    return (
+      <View>
+        <Text>Loading...</Text>
+      </View>
+    );
   }
   const currentQuestion = quizData[currentQuestionIndex];
   return (
@@ -116,13 +115,13 @@ export default function QuizPage(navigation) {
         {/* Iterate through options */}
         {currentQuestion.options.map((option, optionIndex) => {
           // Determine the background color of the button based on the selected answer
-          let buttonColor = 'lightgray'; // Default color for unselected options
+          let buttonColor = 'white'; // Default color for unselected options
 
           if (selectedOptionIndex === optionIndex) {
             if (isCorrectAnswerSelected) {
-              buttonColor = 'green'; // Correct answer selected
+              buttonColor = '#88C572'; // Correct answer selected
             } else {
-              buttonColor = 'red'; // Wrong answer selected
+              buttonColor = '#F36969'; // Wrong answer selected
             }
           }
 
@@ -142,7 +141,9 @@ export default function QuizPage(navigation) {
         {isNextButtonVisible && <Button title="Next Question" onPress={handleNextPress} />}
 
         {/* Try Again Text, visible only if the incorrect answer is selected */}
-        {isCorrectAnswerSelected === false && <Text>Wrong, try again!</Text>}
+        {isCorrectAnswerSelected === false && (
+          <Text style={styles.responseText}>Wrong, try again!</Text>
+        )}
       </View>
     </View>
   );
@@ -155,17 +156,21 @@ const styles = StyleSheet.create({
     backgroundColor: '#CDEBC5',
   },
   whiteBox: {
-    backgroundColor: 'white',
     padding: 20,
-    borderRadius: 10,
     marginBottom: 20,
-    marginTop: 50,
+    marginTop: 70,
+    borderRadius: 20, // Border-radius set to 10px
+    borderWidth: 4, // Border width set to 4px
+    borderColor: 'rgba(126, 163, 167, 0.70)', // Semi-transparent border color
+    backgroundColor: '#F7FAF9', // Background color with fallback to white
+    height: '80%',
   },
   questionText: {
     fontSize: 18,
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
     marginBottom: 30,
     marginTop: 30,
+    color: '#2F5361',
   },
   TitleText: {
     fontSize: 35,
@@ -173,6 +178,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginTop: 20,
     marginLeft: 100,
+    color: '#2F5361',
   },
   optionButton: {
     padding: 15,
@@ -180,8 +186,16 @@ const styles = StyleSheet.create({
     marginBottom: 25,
     alignItems: 'center',
     justifyContent: 'center',
+    borderRadius: 15, // Border-radius set to 15px
+    borderWidth: 3, // Border width set to 3px
+    borderColor: '#44686C', // Border color, matching the value from var(--Icon-Dark)
   },
   optionText: {
     fontSize: 20,
+    color: '#2F5361',
+  },
+  responseText: {
+    marginRight: 'auto',
+    marginLeft: 'auto',
   },
 });

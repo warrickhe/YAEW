@@ -4,6 +4,26 @@ import * as SecureStore from 'expo-secure-store';
 import base64 from 'base-64';
 import FlipCard from 'react-native-flip-card';
 import { LinearGradient } from 'expo-linear-gradient';
+import barnOwlImage from '../images/barn_owl.jpg';
+import bleedingHeartImage from '../images/bleeding_heart.jpg';
+import greatDaneImage from '../images/great_dane.jpg';
+import japaneseBeetleImage from '../images/japanese_beetle.jpg';
+import lionImage from '../images/lion.jpg';
+import muleDeerImage from '../images/mule_deer.jpg';
+import yellowPerchImage from '../images/perch.jpg';
+import pigImage from '../images/pig.jpg';
+
+// Create a mapping of species names to image paths
+const imageMap = {
+  'barn owl': barnOwlImage,
+  'pacific bleeding heart': bleedingHeartImage,
+  'great dane': greatDaneImage,
+  'japanese beetle': japaneseBeetleImage,
+  lion: lionImage,
+  'mule deer': muleDeerImage,
+  'yellow perch': yellowPerchImage,
+  'domestic pig': pigImage,
+};
 
 const BACKEND_URL = 'http://192.168.1.100:7272';
 
@@ -67,53 +87,52 @@ export default function InfoPage({ navigation, route }) {
 
   return (
     <View style={styles.container}>
-    <FlipCard style={styles.whiteBox}>
+      <FlipCard style={styles.whiteBox}>
         {/* Front Side */}
         <View style={styles.front}>
-            {/* Main Image */}
-            <Image
-                source={require('../images/index-placeholder-image.jpg')}
-                style={[styles.mainImage, { width: '150%', height: 150, resizeMode: 'cover' }]}
-                resizeMode="contain"
-            />
-            <View>
-                <Text style={styles.NameText}>{speciesName}</Text>
-            </View>
-            <View style={styles.box}>
-                <Text style={styles.bubbleText}>Found: {numFound}</Text>
-            </View>
+          {/* Main Image */}
+          <Image
+            source={imageMap[speciesName]}
+            style={[styles.mainImage, { width: '150%', height: 150, resizeMode: 'cover' }]}
+            resizeMode="contain"
+          />
+          <View>
+            <Text style={styles.NameText}>{speciesName}</Text>
+          </View>
+          <View style={styles.box}>
+            <Text style={styles.bubbleText}>Found: {numFound}</Text>
+          </View>
 
-            {/* Description */}
-            <View style={styles.separator} />
-            <Text>Photos</Text>
+          {/* Description */}
+          <View style={styles.separator} />
+          <Text style={styles.photoText}>Photos</Text>
 
-            {/* User Images Row */}
-            {/* Use ScrollView with horizontal prop set to true */}
-            <ScrollView horizontal style={styles.userImagesRow}>
-                {images.map((image, index) => (
-                    <TouchableOpacity
-                        key={`${speciesName}-${index}`}
-                        style={styles.userImageContainer}
-                        onPress={() => handleImageClick(convertBinary(image))}
-                    >
-                        {/* User Image */}
-                        <Image
-                            source={{ uri: convertBinary(image) }}
-                            style={styles.userImage}
-                            resizeMode="cover"
-                        />
-                    </TouchableOpacity>
-                ))}
-            </ScrollView>
+          {/* User Images Row */}
+          {/* Use ScrollView with horizontal prop set to true */}
+          <ScrollView horizontal style={styles.userImagesRow}>
+            {images.map((image, index) => (
+              <TouchableOpacity
+                key={`${speciesName}-${index}`}
+                style={styles.userImageContainer}
+                onPress={() => handleImageClick(convertBinary(image))}
+              >
+                {/* User Image */}
+                <Image
+                  source={{ uri: convertBinary(image) }}
+                  style={styles.userImage}
+                  resizeMode="cover"
+                />
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
         </View>
 
         {/* Back Side */}
         <View style={styles.back}>
-            <Text style={styles.backText}>{description}</Text>
+          <Text style={styles.backText}>{description}</Text>
         </View>
-    </FlipCard>
-</View>
-
+      </FlipCard>
+    </View>
   );
 }
 
@@ -127,13 +146,13 @@ const styles = StyleSheet.create({
     height: 2,
     width: '70%',
     backgroundColor: '#808080',
-    marginTop: 10,
-    marginBottom: 10,
+    marginTop: 20,
+    marginBottom: 20,
   },
-  NameText:{
-    fontSize:20,
-    padding:5,
-    
+  NameText: {
+    fontSize: 20,
+    padding: 5,
+    color: '#2F5361',
   },
   whiteBox: {
     flex: 1,
@@ -148,7 +167,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     // Remove fixed height or set it to 'auto' to allow the card to adjust
     height: 'auto',
-},
+  },
   front: {
     flex: 1,
     alignItems: 'center',
@@ -163,6 +182,7 @@ const styles = StyleSheet.create({
   backText: {
     color: 'black',
     fontSize: 15,
+    color: '#2F5361',
   },
   mainImage: {
     width: '100%',
@@ -179,11 +199,11 @@ const styles = StyleSheet.create({
   },
   landingPage: {
     flex: 1,
-    width: "100%",
+    width: '100%',
     height: 852,
-    backgroundColor: "transparent",
-    overflow: "hidden"
-    },
+    backgroundColor: 'transparent',
+    overflow: 'hidden',
+  },
   bubbleText: {
     color: 'white',
   },
@@ -205,5 +225,8 @@ const styles = StyleSheet.create({
     width: 100, // Adjust the width as desired
     height: 100, // Adjust the height as desired
     borderRadius: 8,
-},
+  },
+  photoText: {
+    color: '#2F5361',
+  },
 });

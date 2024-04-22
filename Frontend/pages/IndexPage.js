@@ -5,6 +5,27 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 const BACKEND_URL = 'http://192.168.1.100:7272';
 
+import barnOwlImage from '../images/barn_owl.jpg';
+import bleedingHeartImage from '../images/bleeding_heart.jpg';
+import greatDaneImage from '../images/great_dane.jpg';
+import japaneseBeetleImage from '../images/japanese_beetle.jpg';
+import lionImage from '../images/lion.jpg';
+import muleDeerImage from '../images/mule_deer.jpg';
+import yellowPerchImage from '../images/perch.jpg';
+import pigImage from '../images/pig.jpg';
+
+// Create a mapping of species names to image paths
+const imageMap = {
+  'barn owl': barnOwlImage,
+  'pacific bleeding heart': bleedingHeartImage,
+  'great dane': greatDaneImage,
+  'japanese beetle': japaneseBeetleImage,
+  lion: lionImage,
+  'mule deer': muleDeerImage,
+  'yellow perch': yellowPerchImage,
+  'domestic pig': pigImage,
+};
+
 export default function IndexPage({ navigation }) {
   const [deviceID, setDeviceID] = useState('');
   const [indexData, setIndexData] = useState([]);
@@ -52,8 +73,7 @@ export default function IndexPage({ navigation }) {
       <View style={styles.row}>
         {item.map((speciesName, index) => (
           <TouchableOpacity key={index} onPress={() => handleImageClick(speciesName)}>
-            {/* TODO: CHANGE IMAGE URL */}
-            <Image source={require('../images/index-placeholder-image.jpg')} style={styles.image} />
+            <Image source={imageMap[speciesName]} style={styles.image} />
             <Text style={styles.image_text}>{speciesName}</Text>
           </TouchableOpacity>
         ))}
